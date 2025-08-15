@@ -1,0 +1,17 @@
+IMPORTANTE
+
+Nombre: Ahmaru Oshien Huidobro Garcia
+RUT/ROL: 21.635.070-7 / 202330540-5
+Carrera: Ingenieria civil telematica
+
+Condiciones de compilacion y ejecucion para cada ejercicio:
+
+Ejercicio 1: En aragorn no es necesario usar -std=c99 y compila bien con el "gcc -o Archivo.o Archivo.c".
+
+Ejercicio 2 y 4: Para compilar en aragorn, en ambos se debe usar este prototipo: "gcc -o Archivo.o Archivo.c -std=c99"
+
+Los ejemplos de validacion fueron variados pero los ultimos que hice fueron: 
+
+Ejercicio 1 : num1 = 999 , num2 = 1
+Ejercicio 2 : "tangananica". 
+Ejercicio 4 : "Muy buenas noches gente bonita."

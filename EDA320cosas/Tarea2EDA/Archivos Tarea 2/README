@@ -1,0 +1,15 @@
+IMPORTANTE
+
+Nombre: Ahmaru Oshien Huidobro Garcia
+RUT/ROL: 21.635.070-7 / 202330540-5
+Carrera: Ingenieria civil telematica
+
+El programa en general funciona, ya que guarda la informacion en nodos y la puede manejar relativamente bien con unos errores.
+
+Para compilar son necesarios los archivos: 
+                                        main.c asistencia.c analisis.c 
+Aunque hay un Makefile hecho para compilar con el comando de "make" en la terminal.
+Y los archivos deben estar en la misma carpeta donde esta el codigo y donde se ejecuta para poder compilar bien sin error.
+
+Por lo que vi en el codigo tiene un error al pasar asistencia en el ultimo dia disponible.
+Tambien al escribir en el archivo.csv :( .
