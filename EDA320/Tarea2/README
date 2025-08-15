@@ -1,0 +1,21 @@
+Este programa simula el sistema de un juego de adivinanzas.
+Donde tendran 3 intentos para adivinar la imagen que se ira mostrando con cada intento.
+
+Instrucciones de compilacion y ejecucion.
+vienen por default los nombres de x.dis en el make file pero si se desea se puede hacer
+    make run file= argumentos. deben haber 9 contando el ejecutable para que el programa funcione.
+
+Hay un tema que para mostrar la imagen se debe tener eog instalado.
+    el comando por terminal es sudo apt-get install eog
+    que es para visualizar las imagenes, porque imlib2 me dio varios problemas y el tiempo se terminaba :[
+
+Para la compilacion hay un MAKEFILE dedicado a ello, por lo tanto usar el comando make para compilar y make run
+para ejecutar el programa. (Tambien tiene un comando para ejecutar con valgrind: make valgrind!!).
+
+el sistema te da pistas en imagen y te si aciertas alguna letra no te quita intentos!!! eso es bueno saberlo.
+
+Datos del creador: (Nombre,rol,carrera,semestre)
+    -Ahmaru Oshien Huidobro Garcia.
+    -202330540-5
+    -Ingenieria civil telematica
+    -Estudiante de 5to semestre

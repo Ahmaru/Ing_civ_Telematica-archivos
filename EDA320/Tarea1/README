@@ -1,0 +1,18 @@
+Este programa simula el sistema de peleas del Mortal Kombat clasico.
+Para jugar hay que elegir un personaje que puede ser predeterminado o creado por ti mismo.
+Esta funcion de crear personaje tambien va en los personajes que estan en las torres!!!
+
+Instrucciones de compilacion y ejecucion.
+Para la apertura de archivos, los archivos no deben llevar cabezal del tipo nombre;....;algo porque el programa
+no soporta una linea de cabezal suponiendo que los archivos de profesores y alumnos mantendran su estructura.
+
+Para la compilacion hay un MAKEFILE dedicado a ello, por lo tanto usar el comando make para compilar y make run
+para ejecutar el programa. (Tambien tiene un comando para ejecutar con valgrind: make valgrind!!).
+
+Y en el programa ya ejecutado se pueden crear estudiantes y profesores, lo unico a tener en cuenta es que tuve problemas implementando la pila de estadisticas y el re-intento :(.
+
+Datos del creador: (Nombre,rol,carrera,semestre)
+    -Ahmaru Oshien Huidobro Garcia.
+    -202330540-5
+    -Ingenieria civil telematica
+    -Estudiante de 5to semestre

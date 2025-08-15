@@ -1,0 +1,6 @@
+Nombre: seba ,años: 10 .
+Nombre: gey ,años: 20 .
+Nombre: Ahmaru ,años: 0 .
+Nombre: seba ,años: 11 .
+Nombre: anot ,años: 60 .
+Nombre: maru ,años: 0 .
