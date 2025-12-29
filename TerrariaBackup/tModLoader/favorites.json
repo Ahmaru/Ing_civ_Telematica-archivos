@@ -1,0 +1,11 @@
+{
+  "World": {
+    "Calamidad.wld": false,
+    "Kirkyfication.wld": true,
+    "Nido_Despejado_de_Polvo.wld": false,
+    "Alegre_Yeet.wld": false
+  },
+  "Player": {
+    "Charlie_Floyd.plr": true
+  }
+}
