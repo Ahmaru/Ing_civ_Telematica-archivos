@@ -582,6 +582,7 @@
       "ToggleCameraMode": ["F4"],
       "ToggleCreativeMenu": ["C"],
       "CalamityMod/AdrenalineMode": ["Mouse5"],
+      "CalamityMod/ArmorSetBonus": ["V"],
       "CalamityMod/DashDoubleTapOverride": ["Mouse4"],
       "CalamityMod/GravistarSabatonHotkey": ["LeftControl"],
       "CalamityMod/RageMode": ["Q"],
