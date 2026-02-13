@@ -1,0 +1,2 @@
+Hi! You're probably wondering what this directory is and why it exists if you've found it.
+This is how the Calamity Mod currently manages data that is saved globally across all worlds. You will find all keys managing globally saved data in the other text file within this folder. You are free to remove any of those keys if you wish to reapply the lock on whatever in-game content they unlock. If you have no interest in doing so then it is recommended you simply leave the file as is.
