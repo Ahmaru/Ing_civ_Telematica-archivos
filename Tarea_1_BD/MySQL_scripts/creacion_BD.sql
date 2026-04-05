@@ -1,9 +1,7 @@
 --creamos la base de datos
-
 CREATE DATABASE postulaciones_ct_usm;
 
--- Definimos los catalogos rn
-
+--Creamos los catalogos
 CREATE TABLE sede (
     id_sede INT PRIMARY KEY AUTO_INCREMENT,
     descripcion VARCHAR(50) NOT NULL
@@ -35,19 +33,38 @@ CREATE TABLE tipo_iniciativa (
 ) Engine=InnoDB;
 -- hasta aqui llegan los catalogos
 
--- tabla cronograma no estoy seguro pero igual la planteo en caso de
--- tuve que cambiarla por logica de la BD
-CREATE TABLE etapa (
-    id_etapa INT PRIMARY KEY AUTO_INCREMENT,
-    plazo INT NOT NULL,
-    entregable VARCHAR(200) NOT NULL,
-    connect_cronograma INT FOREIGN KEY
+CREATE TABLE postulacion (
+    codigo_interno INT PRIMARY KEY AUTO_INCREMENT,
+    numero_postulacion VARCHAR(20) UNIQUE NOT NULL,
+    fecha_postulacion DATE NOT NULL,
+    nombre_iniciativa VARCHAR(100) NOT NULL,
+    objetivo VARCHAR(255) NOT NULL,
+    descripcion_soluciones VARCHAR(255) NOT NULL,
+    resultados_esperados VARCHAR(255) NOT NULL,
+    nombre_rep1 VARCHAR(100) NOT NULL,
+    nombre_rep2 VARCHAR(100) NOT NULL,
+    presupuesto DECIMAL(12,2) NOT NULL,
+    rut_empresa VARCHAR(12) NOT NULL,
+    FOREIGN KEY (rut_empresa) REFERENCES empresa(rut_empresa),
+    id_sede INT,
+    FOREIGN KEY (id_sede) REFERENCES sede(id_sede),
+    id_reg_ejec INT,
+    FOREIGN KEY (id_reg_ejec) REFERENCES regiones(id_regiones),
+    id_reg_impc INT,
+    FOREIGN KEY (id_reg_impc) REFERENCES regiones(id_regiones),
+    id_tipo_inciativa INT,
+    FOREIGN KEY (id_tipo_inciativa) REFERENCES tipo_iniciativa(id_tipo_in),
+    id_estado_postulacion INT,
+    FOREIGN KEY (id_estado_postulacion) REFERENCES estado_postulacion(id_estado)
 ) Engine=InnoDB;
 
-CREATE TABLE cronograma (
-    id_cronograma INT PRIMARY KEY AUTO_INCREMENT,
-    id_etapa INT,
-    FOREIGN KEY (id_etapa) REFERENCES etapa(id_etapa)
+CREATE TABLE etapa (
+    id_etapa INT PRIMARY KEY AUTO_INCREMENT,
+    nombre_etapa VARCHAR(100) NOT NULL,
+    semanas_plazo INT NOT NULL,
+    entregable VARCHAR(100) NOT NULL,
+    codigo_interno INT,
+    FOREIGN KEY (codigo_interno) REFERENCES postulacion(codigo_interno)
 ) Engine=InnoDB;
 
 CREATE TABLE empresa (
@@ -56,7 +73,9 @@ CREATE TABLE empresa (
     nombre_representante VARCHAR(100) NOT NULL,
     mail_representante VARCHAR(100) NOT NULL,
     telefono_representante INT NOT NULL UNIQUE,
-    convenio_USM BOOLEAN
+    convenio_USM TINYINT NOT NULL,
+    id_tamaño_empresa INT,
+    FOREIGN KEY (id_tamaño_empresa) REFERENCES tamaño_empresa(id_tamaño)
 ) Engine=InnoDB;
 
 CREATE TABLE integrantes (
@@ -64,65 +83,73 @@ CREATE TABLE integrantes (
     rut VARCHAR(12) PRIMARY KEY,
     dpto VARCHAR(100) NOT NULL,
     mail VARCHAR(100) NOT NULL UNIQUE,
-    telefono INT UNIQUE
+    telefono INT UNIQUE,
+    id_sede INT,
+    FOREIGN KEY (id_sede) REFERENCES sede(id_sede),
+    id_tipo INT,
+    FOREIGN KEY (id_tipo) REFERENCES tipo_integrante(id_tipo)
 ) Engine=InnoDB;
 
-CREATE TABLE postulacion (
-    -- luego sigo con esto ya que necesito P2 para seguir con las definiciones y alguna
-    -- conexion con otras tablas
+CREATE TABLE equipo_trabajo (
+    codigo_interno INT,
+    rut VARCHAR(12),
+    rol VARCHAR(50) NOT NULL,
+    --primary key compuesta para que no se repita el mismo integrante en la misma postulacion.
+    PRIMARY KEY (codigo_interno,rut),
+    FOREIGN KEY (rut) REFERENCES integrantes(rut),
+    FOREIGN KEY (codigo_interno) REFERENCES postulacion(codigo_interno)
 ) Engine=InnoDB;
-;
 
 -- Aqui comenzamos a llenar los catalogos como son valores constantes
 
-INSERT INTO sede (descripcion)
-    VALUES ("Sede Casa central Valparaiso"),
-    VALUES ("Sede San Joaquin"),
-    VALUES ("Sede Vitacura"),
-    VALUES ("Sede Viña del Mar"),
-    VALUES ("Sede Concepcion")
+INSERT INTO sede (descripcion) VALUES
+    ("Campus Casa central Valparaiso"),
+    ("Campus San Joaquin"),
+    ("Campus Vitacura"),
+    ("Sede Viña del Mar"),
+    ("Sede Concepcion")
 ;
 
-INSERT INTO tamaño_empresa (descripcion)
-    VALUES ("Micro-empresa"),
-    VALUES ("Mediana"),
-    VALUES ("Grande")
+INSERT INTO tamaño_empresa (descripcion) VALUES
+    ("Micro-empresa"),
+    ("Mediana"),
+    ("Grande")
 ;
 
-INSERT INTO regiones (descripcion)
-    VALUES ("Región de Tarapaca"),
-    VALUES ("Región de Antofagasta"),
-    VALUES ("Región de Atacama"),
-    VALUES ("Región de Coquimbo"),
-    VALUES ("Región de Valparaiso"),
-    VALUES ("Región del Libertador Bernardo O'Higgins"),
-    VALUES ("Región del Maule"),
-    VALUES ("Región del Biobio"),
-    VALUES ("Región de la Araucania"),
-    VALUES ("Región de Los Lagos"),
-    VALUES ("Región de Aisen"),
-    VALUES ("Región de Magallanes y Antartica Chilena"),
-    VALUES ("Región Metropolitana"),
-    VALUES ("Región de Los Rios"),
-    VALUES ("Región de Arica-Parinacota"),
-    VALUES ("Región de Nuble")
+INSERT INTO regiones (descripcion) VALUES
+    ("Región de Tarapaca"),
+    ("Región de Antofagasta"),
+    ("Región de Atacama"),
+    ("Región de Coquimbo"),
+    ("Región de Valparaiso"),
+    ("Región del Libertador Bernardo O'Higgins"),
+    ("Región del Maule"),
+    ("Región del Biobio"),
+    ("Región de la Araucania"),
+    ("Región de Los Lagos"),
+    ("Región de Aisen"),
+    ("Región de Magallanes y Antartica Chilena"),
+    ("Región Metropolitana"),
+    ("Región de Los Rios"),
+    ("Región de Arica-Parinacota"),
+    ("Región de Nuble")
 ;
 
-INSERT INTO estado_postulacion (descripcion)
-    VALUES ("En revisión"),
-    VALUES ("Aprobada"),
-    VALUES ("Rechazada"),
-    VALUES ("Cerrada")
+INSERT INTO estado_postulacion (descripcion) VALUES
+    ("En revisión"),
+    ("Aprobada"),
+    ("Rechazada"),
+    ("Cerrada")
 ;
 
-INSERT INTO tipo_integrante (descripcion)
-    VALUES ("Profesor"),
-    VALUES ("Estudiante")
+INSERT INTO tipo_integrante (descripcion) VALUES
+    ("Profesor"),
+    ("Estudiante")
 ;
 
-INSERT INTO tipo_iniciativa (descripcion)
-    VALUES ("Nueva"),
-    VALUES ("Existente")
+INSERT INTO tipo_iniciativa (descripcion) VALUES
+    ("Nueva"),
+    ("Existente")
 ;
 
 -- con esto deberia estar casi listo el script de creacion
