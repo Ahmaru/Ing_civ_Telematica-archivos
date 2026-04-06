@@ -1,39 +1,53 @@
 --creamos la base de datos
-CREATE DATABASE postulaciones_ct_usm;
+CREATE DATABASE IF NOT EXISTS postulaciones_ct_usm;
+
+--Usamos la base de datos ya creada
+USE postulaciones_ct_usm;
 
 --Creamos los catalogos
-CREATE TABLE sede (
+CREATE TABLE IF NOT EXISTS sede (
     id_sede INT PRIMARY KEY AUTO_INCREMENT,
     descripcion VARCHAR(50) NOT NULL
 ) Engine=InnoDB; -- como piden InnoDB se define en la creacion.
 
-CREATE TABLE tamaño_empresa (
+CREATE TABLE IF NOT EXISTS tamaño_empresa (
     id_tamaño INT PRIMARY KEY AUTO_INCREMENT,
     descripcion VARCHAR(50) NOT NULL
 ) Engine=InnoDB;
 
-CREATE TABLE regiones (
+CREATE TABLE IF NOT EXISTS regiones (
     id_regiones INT PRIMARY KEY AUTO_INCREMENT,
     descripcion VARCHAR(50) NOT NULL
 ) Engine=InnoDB;
 
-CREATE TABLE estado_postulacion (
+CREATE TABLE IF NOT EXISTS estado_postulacion (
     id_estado INT PRIMARY KEY AUTO_INCREMENT,
     descripcion VARCHAR(50) NOT NULL
 ) Engine=InnoDB;
 
-CREATE TABLE tipo_integrante (
+CREATE TABLE IF NOT EXISTS tipo_integrante (
     id_tipo INT PRIMARY KEY AUTO_INCREMENT,
     descripcion VARCHAR(50) NOT NULL
 ) Engine=InnoDB;
 
-CREATE TABLE tipo_iniciativa (
+CREATE TABLE IF NOT EXISTS tipo_iniciativa (
     id_tipo_in INT PRIMARY KEY AUTO_INCREMENT,
     descripcion VARCHAR(100) NOT NULL
 ) Engine=InnoDB;
 -- hasta aqui llegan los catalogos
 
-CREATE TABLE postulacion (
+CREATE TABLE IF NOT EXISTS empresa (
+    rut_empresa VARCHAR(12) PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL UNIQUE,
+    nombre_representante VARCHAR(100) NOT NULL,
+    mail_representante VARCHAR(100) NOT NULL,
+    telefono_representante VARCHAR(12) NOT NULL UNIQUE,
+    convenio_USM TINYINT NOT NULL,
+    id_tamaño_empresa INT,
+    FOREIGN KEY (id_tamaño_empresa) REFERENCES tamaño_empresa(id_tamaño)
+) Engine=InnoDB;
+
+CREATE TABLE IF NOT EXISTS postulacion (
     codigo_interno INT PRIMARY KEY AUTO_INCREMENT,
     numero_postulacion VARCHAR(20) UNIQUE NOT NULL,
     fecha_postulacion DATE NOT NULL,
@@ -58,43 +72,31 @@ CREATE TABLE postulacion (
     FOREIGN KEY (id_estado_postulacion) REFERENCES estado_postulacion(id_estado)
 ) Engine=InnoDB;
 
-CREATE TABLE etapa (
+CREATE TABLE IF NOT EXISTS etapa (
     id_etapa INT PRIMARY KEY AUTO_INCREMENT,
     nombre_etapa VARCHAR(100) NOT NULL,
     semanas_plazo INT NOT NULL,
     entregable VARCHAR(100) NOT NULL,
-    codigo_interno INT,
-    FOREIGN KEY (codigo_interno) REFERENCES postulacion(codigo_interno)
+    codigo_interno_e INT,
+    FOREIGN KEY (codigo_interno_e) REFERENCES postulacion(codigo_interno)
 ) Engine=InnoDB;
 
-CREATE TABLE empresa (
-    rut_empresa VARCHAR(12) PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL UNIQUE,
-    nombre_representante VARCHAR(100) NOT NULL,
-    mail_representante VARCHAR(100) NOT NULL,
-    telefono_representante INT NOT NULL UNIQUE,
-    convenio_USM TINYINT NOT NULL,
-    id_tamaño_empresa INT,
-    FOREIGN KEY (id_tamaño_empresa) REFERENCES tamaño_empresa(id_tamaño)
-) Engine=InnoDB;
-
-CREATE TABLE integrantes (
+CREATE TABLE IF NOT EXISTS integrantes (
     nombre VARCHAR(100) NOT NULL UNIQUE,
     rut VARCHAR(12) PRIMARY KEY,
     dpto VARCHAR(100) NOT NULL,
     mail VARCHAR(100) NOT NULL UNIQUE,
-    telefono INT UNIQUE,
+    telefono VARCHAR(12) UNIQUE,
     id_sede INT,
     FOREIGN KEY (id_sede) REFERENCES sede(id_sede),
     id_tipo INT,
     FOREIGN KEY (id_tipo) REFERENCES tipo_integrante(id_tipo)
 ) Engine=InnoDB;
 
-CREATE TABLE equipo_trabajo (
+CREATE TABLE IF NOT EXISTS equipo_trabajo (
     codigo_interno INT,
     rut VARCHAR(12),
     rol VARCHAR(50) NOT NULL,
-    --primary key compuesta para que no se repita el mismo integrante en la misma postulacion.
     PRIMARY KEY (codigo_interno,rut),
     FOREIGN KEY (rut) REFERENCES integrantes(rut),
     FOREIGN KEY (codigo_interno) REFERENCES postulacion(codigo_interno)
