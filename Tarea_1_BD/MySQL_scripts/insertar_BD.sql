@@ -5,39 +5,39 @@ USE postulaciones_ct_usm;
 
 INSERT INTO integrantes (rut, nombre, dpto, mail, telefono, id_sede, id_tipo) VALUES
 
-    ('11111111-1', 'Prof. Jorge Castillo',   'Informática',   'jcastillo@usm.cl',  '911000001', 1, 1),
-    ('11111111-2', 'Prof. Mónica Vera',      'Electrónica',   'mvera@usm.cl',      '911000002', 1, 1),
-    ('11111111-3', 'Prof. Andrés Pino',      'Matemáticas',   'apino@usm.cl',      '911000003', 2, 1),
-    ('11111111-4', 'Prof. Claudia Soto',     'Computación',   'csoto@usm.cl',      '911000004', 2, 1),
-    ('11111111-5', 'Prof. Ricardo Núñez',    'Industrial',    'rnunez@usm.cl',     '911000005', 3, 1),
-    ('11111111-6', 'Prof. Patricia Lagos',   'Informática',   'plagos@usm.cl',     '911000006', 3, 1),
-    ('11111111-7', 'Prof. Sebastián Díaz',   'Electrónica',   'sdiaz@usm.cl',      '911000007', 4, 1),
-    ('11111111-8', 'Prof. Isabel Ramos',     'Matemáticas',   'iramos@usm.cl',     '911000008', 4, 1),
-    ('11111111-9', 'Prof. Felipe Muñoz',     'Computación',   'fmunoz@usm.cl',     '911000009', 5, 1),
-    ('11111111-0', 'Prof. Daniela Cruz',     'Industrial',    'dcruz@usm.cl',      '911000010', 5, 1),
+    ('11111111-1', 'Jorge Castillo',   'Informática',   'jcastillo@usm.cl',  '911000001', 1, 1),
+    ('11111111-2', 'Mónica Vera',      'Electrónica',   'mvera@usm.cl',      '911000002', 1, 1),
+    ('11111111-3', 'Andrés Pino',      'Matemáticas',   'apino@usm.cl',      '911000003', 2, 1),
+    ('11111111-4', 'Claudia Soto',     'Computación',   'csoto@usm.cl',      '911000004', 2, 1),
+    ('11111111-5', 'Ricardo Núñez',    'Industrial',    'rnunez@usm.cl',     '911000005', 3, 1),
+    ('11111111-6', 'Patricia Lagos',   'Informática',   'plagos@usm.cl',     '911000006', 3, 1),
+    ('11111111-7', 'Sebastián Díaz',   'Electrónica',   'sdiaz@usm.cl',      '911000007', 4, 1),
+    ('11111111-8', 'Isabel Ramos',     'Matemáticas',   'iramos@usm.cl',     '911000008', 4, 1),
+    ('11111111-9', 'Felipe Muñoz',     'Computación',   'fmunoz@usm.cl',     '911000009', 5, 1),
+    ('11111111-0', 'Daniela Cruz',     'Industrial',    'dcruz@usm.cl',      '911000010', 5, 1),
 
-    ('22222222-1', 'Est. Camila Torres',      'Informática',   'ctorres@alumnos.usm.cl',    '922000001', 1, 2),
-    ('22222222-2', 'Est. Diego Herrera',      'Informática',   'dherrera@alumnos.usm.cl',   '922000002', 1, 2),
-    ('22222222-3', 'Est. Sofía Mendez',       'Electrónica',   'smendez@alumnos.usm.cl',    '922000003', 1, 2),
-    ('22222222-4', 'Est. Matías Flores',      'Matemáticas',   'mflores@alumnos.usm.cl',    '922000004', 1, 2),
-    ('22222222-5', 'Est. Valentina Ossa',     'Computación',   'vossa@alumnos.usm.cl',      '922000005', 2, 2),
-    ('22222222-6', 'Est. Nicolás Ibarra',     'Industrial',    'nibarra@alumnos.usm.cl',    '922000006', 2, 2),
-    ('22222222-7', 'Est. Fernanda Reyes',     'Informática',   'freyes@alumnos.usm.cl',     '922000007', 2, 2),
-    ('22222222-8', 'Est. Tomás Contreras',    'Electrónica',   'tcontreras@alumnos.usm.cl', '922000008', 2, 2),
-    ('22222222-9', 'Est. Paula Jiménez',      'Computación',   'pjimenez@alumnos.usm.cl',   '922000009', 3, 2),
-    ('22222222-0', 'Est. Ignacio Moya',       'Industrial',    'imoya@alumnos.usm.cl',      '922000010', 3, 2),
-    ('33333333-1', 'Est. Catalina Bravo',     'Informática',   'cbravo@alumnos.usm.cl',     '933000001', 3, 2),
-    ('33333333-2', 'Est. Rodrigo Sepúlveda',  'Matemáticas',   'rsepulveda@alumnos.usm.cl', '933000002', 3, 2),
-    ('33333333-3', 'Est. Isidora Parra',      'Electrónica',   'iparra@alumnos.usm.cl',     '933000003', 4, 2),
-    ('33333333-4', 'Est. Benjamín Vega',      'Computación',   'bvega@alumnos.usm.cl',      '933000004', 4, 2),
-    ('33333333-5', 'Est. Antonia Guzmán',     'Industrial',    'aguzman@alumnos.usm.cl',    '933000005', 4, 2),
-    ('33333333-6', 'Est. Cristóbal Lara',     'Informática',   'clara@alumnos.usm.cl',      '933000006', 4, 2),
-    ('33333333-7', 'Est. Javiera Espinoza',   'Matemáticas',   'jespinoza@alumnos.usm.cl',  '933000007', 5, 2),
-    ('33333333-8', 'Est. Emilio Tapia',       'Electrónica',   'etapia@alumnos.usm.cl',     '933000008', 5, 2),
-    ('33333333-9', 'Est. Renata Fuentes',     'Computación',   'rfuentes@alumnos.usm.cl',   '933000009', 5, 2),
-    ('33333333-0', 'Est. Maximiliano Ríos',   'Industrial',    'mrios@alumnos.usm.cl',      '933000010', 5, 2),
-    ('44444444-1', 'Est. Constanza Muñoz',    'Informática',   'cmunoz@alumnos.usm.cl',     '944000001', 1, 2),
-    ('44444444-2', 'Est. Álvaro Peña',        'Electrónica',   'apena@alumnos.usm.cl',      '944000002', 2, 2)
+    ('22222222-1', 'Camila Torres',      'Informática',   'ctorres@alumnos.usm.cl',    '922000001', 1, 2),
+    ('22222222-2', 'Diego Herrera',      'Informática',   'dherrera@alumnos.usm.cl',   '922000002', 1, 2),
+    ('22222222-3', 'Sofía Mendez',       'Electrónica',   'smendez@alumnos.usm.cl',    '922000003', 1, 2),
+    ('22222222-4', 'Matías Flores',      'Matemáticas',   'mflores@alumnos.usm.cl',    '922000004', 1, 2),
+    ('22222222-5', 'Valentina Ossa',     'Computación',   'vossa@alumnos.usm.cl',      '922000005', 2, 2),
+    ('22222222-6', 'Nicolás Ibarra',     'Industrial',    'nibarra@alumnos.usm.cl',    '922000006', 2, 2),
+    ('22222222-7', 'Fernanda Reyes',     'Informática',   'freyes@alumnos.usm.cl',     '922000007', 2, 2),
+    ('22222222-8', 'Tomás Contreras',    'Electrónica',   'tcontreras@alumnos.usm.cl', '922000008', 2, 2),
+    ('22222222-9', 'Paula Jiménez',      'Computación',   'pjimenez@alumnos.usm.cl',   '922000009', 3, 2),
+    ('22222222-0', 'Ignacio Moya',       'Industrial',    'imoya@alumnos.usm.cl',      '922000010', 3, 2),
+    ('33333333-1', 'Catalina Bravo',     'Informática',   'cbravo@alumnos.usm.cl',     '933000001', 3, 2),
+    ('33333333-2', 'Rodrigo Sepúlveda',  'Matemáticas',   'rsepulveda@alumnos.usm.cl', '933000002', 3, 2),
+    ('33333333-3', 'Isidora Parra',      'Electrónica',   'iparra@alumnos.usm.cl',     '933000003', 4, 2),
+    ('33333333-4', 'Benjamín Vega',      'Computación',   'bvega@alumnos.usm.cl',      '933000004', 4, 2),
+    ('33333333-5', 'Antonia Guzmán',     'Industrial',    'aguzman@alumnos.usm.cl',    '933000005', 4, 2),
+    ('33333333-6', 'Cristóbal Lara',     'Informática',   'clara@alumnos.usm.cl',      '933000006', 4, 2),
+    ('33333333-7', 'Javiera Espinoza',   'Matemáticas',   'jespinoza@alumnos.usm.cl',  '933000007', 5, 2),
+    ('33333333-8', 'Emilio Tapia',       'Electrónica',   'etapia@alumnos.usm.cl',     '933000008', 5, 2),
+    ('33333333-9', 'Renata Fuentes',     'Computación',   'rfuentes@alumnos.usm.cl',   '933000009', 5, 2),
+    ('33333333-0', 'Maximiliano Ríos',   'Industrial',    'mrios@alumnos.usm.cl',      '933000010', 5, 2),
+    ('44444444-1', 'Constanza Muñoz',    'Informática',   'cmunoz@alumnos.usm.cl',     '944000001', 1, 2),
+    ('44444444-2', 'Álvaro Peña',        'Electrónica',   'apena@alumnos.usm.cl',      '944000002', 2, 2)
 ;
 
 INSERT INTO empresa (rut_empresa,nombre,nombre_representante,mail_representante,telefono_representante,convenio_USM,id_tamaño_empresa) VALUES
@@ -127,40 +127,31 @@ INSERT INTO etapa (nombre_etapa, semanas_plazo, entregable, codigo_interno_e) VA
 
     ('Levantamiento de requisitos',   4,  'Documento de requisitos',      1),
     ('Diseño y arquitectura',         6,  'Diagrama de arquitectura',     1),
-    ('Desarrollo e implementación',   10, 'Sistema funcional desplegado', 1),
-
+    ('Desarrollo e implementación',   45, 'Sistema funcional desplegado', 1),
     ('Análisis de datos históricos',  3,  'Informe de análisis',          2),
     ('Desarrollo de sensores',        8,  'Prototipo IoT funcional',      2),
     ('Integración y pruebas',         6,  'Reporte de pruebas',           2),
-
     ('Diseño instruccional',          5,  'Plan de contenidos aprobado',  3),
     ('Desarrollo de módulos LMS',     8,  'Módulos LMS publicados',       3),
     ('Piloto con usuarios reales',    4,  'Informe de piloto',            3),
-
     ('Modelamiento de rutas',         4,  'Modelo matemático validado',   4),
     ('Implementación del algoritmo',  9,  'Algoritmo en producción',      4),
     ('Integración con flota',         6,  'Sistema integrado con flota',  4),
-
     ('Análisis requerimientos PYME',  4,  'Catálogo de funciones',        5),
     ('Desarrollo módulos ERP',        10, 'ERP beta desplegado',          5),
     ('Capacitación y despliegue',     5,  'Manual de usuario entregado',  5),
-
     ('Recolección preguntas frecuentes', 3, 'Base de conocimiento lista', 6),
     ('Entrenamiento modelo NLP',      7,  'Modelo NLP entrenado',         6),
     ('Despliegue y monitoreo',        4,  'Chatbot en producción',        6),
-
     ('Mapeo de cadena productiva',    5,  'Mapa de procesos aprobado',    7),
     ('Desarrollo blockchain',         12, 'Red blockchain operativa',     7),
     ('Certificación y validación',    8,  'Certificado piloto emitido',   7),
-
     ('Investigación y diseño UX',     4,  'Wireframes validados',         8),
     ('Desarrollo app móvil',          8,  'App beta publicada',           8),
     ('Pruebas con usuarios',          3,  'Informe de usabilidad',        8),
-
     ('Instalación sensores solares',  4,  'Sensores instalados',          9),
     ('Desarrollo dashboard',          7,  'Dashboard funcional',          9),
     ('Validación y ajustes finales',  4,  'Reporte final entregado',      9),
-
     ('Análisis de inventario actual', 3,  'Diagnóstico de stock',         10),
     ('Implementación RFID',           7,  'Sistema RFID activo',          10),
     ('Integración con ERP',           5,  'ERP actualizado con RFID',     10)
@@ -175,7 +166,7 @@ INSERT INTO equipo_trabajo (codigo_interno, rut, rol) VALUES
     (1, '22222222-2', 'Desarrollador Backend'),
     (1, '22222222-3', 'Analista de Datos'),
     (1, '22222222-4', 'Tester QA'),
-    (1, '22222222-5', 'Diseñador UX'),
+--    (1, '22222222-5', 'Diseñador UX'),
 
     (2, '11111111-3', 'Jefe de Proyecto'),
     (2, '11111111-4', 'Coordinador Técnico'),
