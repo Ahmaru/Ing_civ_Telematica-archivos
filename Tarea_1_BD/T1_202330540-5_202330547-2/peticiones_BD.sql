@@ -156,40 +156,31 @@ ORDER BY p.presupuesto DESC;
 -- 7. Cantidad de integrantes por postulación y tipo.
 -- Desglosa la cantidad de profesores y alumnos por cada proyecto.
 SELECT 
-    p.numero_postulacion AS 'Postulación N°', 
-    ti.descripcion AS 'Tipo Integrante', 
-    COUNT(et.rut) AS 'Cantidad'
-FROM equipo_trabajo et
-JOIN postulacion p ON et.codigo_interno = p.codigo_interno
-JOIN integrantes i ON et.rut = i.rut
-JOIN tipo_integrante ti ON i.id_tipo = ti.id_tipo
-GROUP BY p.numero_postulacion, ti.descripcion;
+    p.numero_postulacion,
+    COUNT(CASE WHEN e.id_tipo = 2 THEN 1 END) AS estudiantes,
+    COUNT(CASE WHEN e.id_tipo = 1 THEN 1 END) AS profes,
+    COUNT(et.rut) AS total 
+FROM equipo_trabajo et 
+    JOIN postulacion p ON p.codigo_interno = et.codigo_interno 
+    JOIN integrantes e ON e.rut = et.rut
+GROUP BY p.numero_postulacion
+;
 
 /*Evidencia para query 7.
-+------------------+-----------------+----------+
-| Postulación N°   | Tipo Integrante | Cantidad |
-+------------------+-----------------+----------+
-| POST-001         | Estudiante      |        4 |
-| POST-001         | Profesor        |        3 |
-| POST-002         | Estudiante      |        5 |
-| POST-002         | Profesor        |        3 |
-| POST-003         | Estudiante      |        5 |
-| POST-003         | Profesor        |        3 |
-| POST-004         | Estudiante      |        5 |
-| POST-004         | Profesor        |        3 |
-| POST-005         | Estudiante      |        5 |
-| POST-005         | Profesor        |        3 |
-| POST-006         | Estudiante      |        5 |
-| POST-006         | Profesor        |        3 |
-| POST-007         | Estudiante      |        5 |
-| POST-007         | Profesor        |        3 |
-| POST-008         | Estudiante      |        5 |
-| POST-008         | Profesor        |        3 |
-| POST-009         | Estudiante      |        5 |
-| POST-009         | Profesor        |        3 |
-| POST-010         | Estudiante      |        5 |
-| POST-010         | Profesor        |        3 |
-+------------------+-----------------+----------+
++--------------------+-------------+--------+-------+
+| numero_postulacion | estudiantes | profes | total |
++--------------------+-------------+--------+-------+
+| POST-001           |           5 |      3 |     8 |
+| POST-002           |           5 |      3 |     8 |
+| POST-003           |           5 |      3 |     8 |
+| POST-004           |           5 |      3 |     8 |
+| POST-005           |           5 |      3 |     8 |
+| POST-006           |           5 |      3 |     8 |
+| POST-007           |           5 |      3 |     8 |
+| POST-008           |           5 |      3 |     8 |
+| POST-009           |           5 |      3 |     8 |
+| POST-010           |           5 |      3 |     8 |
++--------------------+-------------+--------+-------+
 */
 
 -- 8. Postulaciones que no cumplen el mínimo de equipo.
