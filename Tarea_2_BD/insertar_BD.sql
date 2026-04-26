@@ -51,78 +51,69 @@ INSERT INTO empresa (rut_empresa,nombre,nombre_representante,mail_representante,
     ('76543221-1', 'Agua .com',         'Francisco Pancho','fran.pancho@agua.com',  '911122344', 0, 1)
 ;
 
-INSERT INTO postulacion (numero_postulacion, fecha_postulacion, nombre_iniciativa, objetivo, descripcion_soluciones, resultados_esperados, nombre_rep1, nombre_rep2, presupuesto, rut_empresa, id_sede, id_reg_ejec, id_reg_impc, id_tipo_inciativa, id_estado_postulacion) VALUES
-    
+INSERT INTO postulacion (numero_postulacion, fecha_postulacion, nombre_iniciativa, objetivo, descripcion_soluciones, resultados_esperados, presupuesto, rut_empresa, id_sede, id_reg_ejec, id_reg_impc, id_tipo_inciativa, id_estado_postulacion) VALUES
+
     ('POST-001', '2026-03-01', 'Sistema de Gestión Documental',
-    'Digitalizar procesos administrativos',
-    'Plataforma web de gestión de documentos',
-    'Reducir tiempos administrativos en 40%',
-    'Prof. Jorge Castillo', 'Prof. Mónica Vera',
-    12000000.00, '76123456-1', 1, 5, 13, 1, 1),
+     'Digitalizar procesos administrativos',
+     'Plataforma web de gestión de documentos',
+     'Reducir tiempos administrativos en 40%',
+     12000000.00, '76123456-1', 1, 5, 13, 1, 1),
 
     ('POST-002', '2026-03-03', 'App Monitoreo Ambiental',
-    'Monitorear calidad del aire en tiempo real',
-    'Aplicación móvil con sensores IoT integrados',
-    'Alertas automáticas de contaminación operativas',
-    'Prof. Andrés Pino', 'Prof. Claudia Soto',
-    18500000.00, '76234567-2', 2, 13, 8, 2, 1),
+     'Monitorear calidad del aire en tiempo real',
+     'Aplicación móvil con sensores IoT integrados',
+     'Alertas automáticas de contaminación operativas',
+     18500000.00, '76234567-2', 2, 13, 8, 2, 1),
 
     ('POST-003', '2026-03-05', 'Plataforma E-Learning',
-    'Mejorar acceso a educación remota en regiones',
-    'LMS con módulos adaptativos de aprendizaje',
-    '500 usuarios capacitados en primer semestre',
-    'Prof. Ricardo Núñez', 'Prof. Patricia Lagos',
-    9800000.00, '76345678-3', 3, 4, 5, 1, 2),
+     'Mejorar acceso a educación remota en regiones',
+     'LMS con módulos adaptativos de aprendizaje',
+     '500 usuarios capacitados en primer semestre',
+     9800000.00, '76345678-3', 3, 4, 5, 1, 2),
 
     ('POST-004', '2026-03-07', 'Sistema Logística Inteligente',
-    'Optimizar rutas de distribución de productos',
-    'Algoritmo de ruteo con Machine Learning',
-    'Reducir costos logísticos en 25%',
-    'Prof. Sebastián Díaz', 'Prof. Isabel Ramos',
-    22000000.00, '76456789-4', 4, 9, 13, 2, 1),
+     'Optimizar rutas de distribución de productos',
+     'Algoritmo de ruteo con Machine Learning',
+     'Reducir costos logísticos en 25%',
+     22000000.00, '76456789-4', 4, 9, 13, 2, 1),
 
     ('POST-005', '2026-03-10', 'Portal Gestión PYME',
-    'Centralizar operaciones de pequeñas empresas',
-    'ERP simplificado desplegado en la nube',
-    '30 empresas beneficiadas con el sistema',
-    'Prof. Felipe Muñoz', 'Prof. Daniela Cruz',
-    15500000.00, '76567890-5', 5, 8, 4, 1, 3),
+     'Centralizar operaciones de pequeñas empresas',
+     'ERP simplificado desplegado en la nube',
+     '30 empresas beneficiadas con el sistema',
+     15500000.00, '76567890-5', 5, 8, 4, 1, 3),
 
     ('POST-006', '2026-03-12', 'Chatbot Atención Ciudadana',
-    'Automatizar consultas en municipios',
-    'Chatbot con procesamiento de lenguaje natural',
-    'Reducir tiempos de espera ciudadana en 60%',
-    'Prof. Jorge Castillo', 'Prof. Andrés Pino',
-    8200000.00, '76678901-6', 1, 13, 5, 2, 1),
+     'Automatizar consultas en municipios',
+     'Chatbot con procesamiento de lenguaje natural',
+     'Reducir tiempos de espera ciudadana en 60%',
+     8200000.00, '76678901-6', 1, 13, 5, 2, 1),
 
     ('POST-007', '2026-03-14', 'Sistema Trazabilidad Agrícola',
-    'Registrar cadena productiva agrícola completa',
-    'Blockchain para trazabilidad de productos',
-    'Certificación para exportaciones obtenida',
-    'Prof. Mónica Vera', 'Prof. Ricardo Núñez',
-    31000000.00, '76123456-1', 2, 4, 9, 1, 2),
+     'Registrar cadena productiva agrícola completa',
+     'Blockchain para trazabilidad de productos',
+     'Certificación para exportaciones obtenida',
+     31000000.00, '76123456-1', 2, 4, 9, 1, 2),
 
     ('POST-008', '2026-03-17', 'App Salud Mental Universitaria',
-    'Apoyar bienestar emocional de estudiantes',
-    'App móvil con recursos psicológicos digitales',
-    '1000 estudiantes atendidos en el año',
-    'Prof. Claudia Soto', 'Prof. Felipe Muñoz',
-    7600000.00, '76234567-2', 3, 5, 13, 2, 1),
+     'Apoyar bienestar emocional de estudiantes',
+     'App móvil con recursos psicológicos digitales',
+     '1000 estudiantes atendidos en el año',
+     7600000.00, '76234567-2', 3, 5, 13, 2, 1),
 
     ('POST-009', '2026-03-20', 'Dashboard Energía Renovable',
-    'Visualizar consumo energético en tiempo real',
-    'Panel de métricas para paneles solares',
-    'Ahorro del 35% en consumo energético',
-    'Prof. Patricia Lagos', 'Prof. Isabel Ramos',
-    19400000.00, '76345678-3', 4, 3, 8, 1, 4),
+     'Visualizar consumo energético en tiempo real',
+     'Panel de métricas para paneles solares',
+     'Ahorro del 35% en consumo energético',
+     19400000.00, '76345678-3', 4, 3, 8, 1, 4),
 
     ('POST-010', '2026-03-22', 'Sistema Inventario Inteligente',
-    'Automatizar control de stock en bodegas',
-    'RFID integrado con sistema ERP existente',
-    'Reducir pérdidas de inventario en 50%',
-    'Prof. Sebastián Díaz', 'Prof. Daniela Cruz',
-    13700000.00, '76456789-4', 5, 13, 3, 2, 1)
+     'Automatizar control de stock en bodegas',
+     'RFID integrado con sistema ERP existente',
+     'Reducir pérdidas de inventario en 50%',
+     13700000.00, '76456789-4', 5, 13, 3, 2, 1)
 ;
+
 
 INSERT INTO etapa (nombre_etapa, semanas_plazo, entregable, codigo_interno_e) VALUES
 
@@ -159,102 +150,125 @@ INSERT INTO etapa (nombre_etapa, semanas_plazo, entregable, codigo_interno_e) VA
     ('Integración con ERP',           5,  'ERP actualizado con RFID',     10)
 ;
 
-INSERT INTO equipo_trabajo (codigo_interno, rut, rol) VALUES
+INSERT INTO equipo_trabajo (codigo_interno, rut, rol, es_responsable) VALUES
 
-    (1, '11111111-1', 'Jefe de Proyecto'),
-    (1, '11111111-2', 'Coordinador Técnico'),
-    (1, '11111111-3', 'Asesor Metodológico'),
-    (1, '22222222-1', 'Desarrollador Frontend'),
-    (1, '22222222-2', 'Desarrollador Backend'),
-    (1, '22222222-3', 'Analista de Datos'),
-    (1, '22222222-4', 'Tester QA'),
---  (1, '22222222-5', 'Diseñador UX'),
+    (1, '11111111-1', 'Jefe de Proyecto',       1),
+    (1, '11111111-2', 'Coordinador Técnico',     0),
+    (1, '11111111-3', 'Asesor Metodológico',     0),
+    (1, '22222222-1', 'Desarrollador Frontend',  0),
+    (1, '22222222-2', 'Desarrollador Backend',   0),
+    (1, '22222222-3', 'Analista de Datos',       0),
+    (1, '22222222-4', 'Tester QA',               0),
+    (1, '22222222-5', 'Diseñador UX',            0),
 
-    (2, '11111111-3', 'Jefe de Proyecto'),
-    (2, '11111111-4', 'Coordinador Técnico'),
-    (2, '11111111-5', 'Asesor Metodológico'),
-    (2, '22222222-5', 'Desarrollador Frontend'),
-    (2, '22222222-6', 'Desarrollador Backend'),
-    (2, '22222222-7', 'Analista de Datos'),
-    (2, '22222222-8', 'Tester QA'),
-    (2, '22222222-9', 'Diseñador UX'),
+    (2, '11111111-3', 'Jefe de Proyecto',        1),
+    (2, '11111111-4', 'Coordinador Técnico',     0),
+    (2, '11111111-5', 'Asesor Metodológico',     0),
+    (2, '22222222-5', 'Desarrollador Frontend',  0),
+    (2, '22222222-6', 'Desarrollador Backend',   0),
+    (2, '22222222-7', 'Analista de Datos',       0),
+    (2, '22222222-8', 'Tester QA',               0),
+    (2, '22222222-9', 'Diseñador UX',            0),
 
-    (3, '11111111-5', 'Jefe de Proyecto'),
-    (3, '11111111-6', 'Coordinador Técnico'),
-    (3, '11111111-7', 'Asesor Metodológico'),
-    (3, '22222222-9', 'Desarrollador Frontend'),
-    (3, '22222222-0', 'Desarrollador Backend'),
-    (3, '33333333-1', 'Analista de Datos'),
-    (3, '33333333-2', 'Tester QA'),
-    (3, '33333333-3', 'Diseñador UX'),
+    (3, '11111111-5', 'Jefe de Proyecto',        1),
+    (3, '11111111-6', 'Coordinador Técnico',     0),
+    (3, '11111111-7', 'Asesor Metodológico',     0),
+    (3, '22222222-9', 'Desarrollador Frontend',  0),
+    (3, '22222222-0', 'Desarrollador Backend',   0),
+    (3, '33333333-1', 'Analista de Datos',       0),
+    (3, '33333333-2', 'Tester QA',               0),
+    (3, '33333333-3', 'Diseñador UX',            0),
 
-    (4, '11111111-7', 'Jefe de Proyecto'),
-    (4, '11111111-8', 'Coordinador Técnico'),
-    (4, '11111111-9', 'Asesor Metodológico'),
-    (4, '33333333-3', 'Desarrollador Frontend'),
-    (4, '33333333-4', 'Desarrollador Backend'),
-    (4, '33333333-5', 'Analista de Datos'),
-    (4, '33333333-6', 'Tester QA'),
-    (4, '33333333-7', 'Diseñador UX'),
+    (4, '11111111-7', 'Jefe de Proyecto',        1),
+    (4, '11111111-8', 'Coordinador Técnico',     0),
+    (4, '11111111-9', 'Asesor Metodológico',     0),
+    (4, '33333333-3', 'Desarrollador Frontend',  0),
+    (4, '33333333-4', 'Desarrollador Backend',   0),
+    (4, '33333333-5', 'Analista de Datos',       0),
+    (4, '33333333-6', 'Tester QA',               0),
+    (4, '33333333-7', 'Diseñador UX',            0),
 
-    (5, '11111111-9', 'Jefe de Proyecto'),
-    (5, '11111111-0', 'Coordinador Técnico'),
-    (5, '11111111-1', 'Asesor Metodológico'),
-    (5, '33333333-7', 'Desarrollador Frontend'),
-    (5, '33333333-8', 'Desarrollador Backend'),
-    (5, '33333333-9', 'Analista de Datos'),
-    (5, '33333333-0', 'Tester QA'),
-    (5, '44444444-1', 'Diseñador UX'),
+    (5, '11111111-9', 'Jefe de Proyecto',        1),
+    (5, '11111111-0', 'Coordinador Técnico',     0),
+    (5, '11111111-1', 'Asesor Metodológico',     0),
+    (5, '33333333-7', 'Desarrollador Frontend',  0),
+    (5, '33333333-8', 'Desarrollador Backend',   0),
+    (5, '33333333-9', 'Analista de Datos',       0),
+    (5, '33333333-0', 'Tester QA',               0),
+    (5, '44444444-1', 'Diseñador UX',            0),
 
-    (6, '11111111-1', 'Jefe de Proyecto'),
-    (6, '11111111-3', 'Coordinador Técnico'),
-    (6, '11111111-5', 'Asesor Metodológico'),
-    (6, '44444444-1', 'Desarrollador Frontend'),
-    (6, '44444444-2', 'Desarrollador Backend'),
-    (6, '22222222-1', 'Analista de Datos'),
-    (6, '22222222-3', 'Tester QA'),
-    (6, '22222222-6', 'Diseñador UX'),
+    (6, '11111111-1', 'Jefe de Proyecto',        1),
+    (6, '11111111-3', 'Coordinador Técnico',     0),
+    (6, '11111111-5', 'Asesor Metodológico',     0),
+    (6, '44444444-1', 'Desarrollador Frontend',  0),
+    (6, '44444444-2', 'Desarrollador Backend',   0),
+    (6, '22222222-1', 'Analista de Datos',       0),
+    (6, '22222222-3', 'Tester QA',               0),
+    (6, '22222222-6', 'Diseñador UX',            0),
 
-    (7, '11111111-2', 'Jefe de Proyecto'),
-    (7, '11111111-4', 'Coordinador Técnico'),
-    (7, '11111111-6', 'Asesor Metodológico'),
-    (7, '22222222-2', 'Desarrollador Frontend'),
-    (7, '22222222-4', 'Desarrollador Backend'),
-    (7, '22222222-7', 'Analista de Datos'),
-    (7, '22222222-8', 'Tester QA'),
-    (7, '33333333-1', 'Diseñador UX'),
+    (7, '11111111-2', 'Jefe de Proyecto',        1),
+    (7, '11111111-4', 'Coordinador Técnico',     0),
+    (7, '11111111-6', 'Asesor Metodológico',     0),
+    (7, '22222222-2', 'Desarrollador Frontend',  0),
+    (7, '22222222-4', 'Desarrollador Backend',   0),
+    (7, '22222222-7', 'Analista de Datos',       0),
+    (7, '22222222-8', 'Tester QA',               0),
+    (7, '33333333-1', 'Diseñador UX',            0),
 
-    (8, '11111111-4', 'Jefe de Proyecto'),
-    (8, '11111111-6', 'Coordinador Técnico'),
-    (8, '11111111-8', 'Asesor Metodológico'),
-    (8, '33333333-2', 'Desarrollador Frontend'),
-    (8, '33333333-4', 'Desarrollador Backend'),
-    (8, '33333333-6', 'Analista de Datos'),
-    (8, '33333333-8', 'Tester QA'),
-    (8, '33333333-0', 'Diseñador UX'),
+    (8, '11111111-4', 'Jefe de Proyecto',        1),
+    (8, '11111111-6', 'Coordinador Técnico',     0),
+    (8, '11111111-8', 'Asesor Metodológico',     0),
+    (8, '33333333-2', 'Desarrollador Frontend',  0),
+    (8, '33333333-4', 'Desarrollador Backend',   0),
+    (8, '33333333-6', 'Analista de Datos',       0),
+    (8, '33333333-8', 'Tester QA',               0),
+    (8, '33333333-0', 'Diseñador UX',            0),
 
-    (9, '11111111-7', 'Jefe de Proyecto'),
-    (9, '11111111-9', 'Coordinador Técnico'),
-    (9, '11111111-0', 'Asesor Metodológico'),
-    (9, '22222222-0', 'Desarrollador Frontend'),
-    (9, '33333333-3', 'Desarrollador Backend'),
-    (9, '33333333-5', 'Analista de Datos'),
-    (9, '33333333-7', 'Tester QA'),
-    (9, '44444444-1', 'Diseñador UX'),
+    (9, '11111111-7', 'Jefe de Proyecto',        1),
+    (9, '11111111-9', 'Coordinador Técnico',     0),
+    (9, '11111111-0', 'Asesor Metodológico',     0),
+    (9, '22222222-0', 'Desarrollador Frontend',  0),
+    (9, '33333333-3', 'Desarrollador Backend',   0),
+    (9, '33333333-5', 'Analista de Datos',       0),
+    (9, '33333333-7', 'Tester QA',               0),
+    (9, '44444444-1', 'Diseñador UX',            0),
 
-    (10, '11111111-8', 'Jefe de Proyecto'),
-    (10, '11111111-0', 'Coordinador Técnico'),
-    (10, '11111111-2', 'Asesor Metodológico'),
-    (10, '44444444-2', 'Desarrollador Frontend'),
-    (10, '22222222-5', 'Desarrollador Backend'),
-    (10, '33333333-9', 'Analista de Datos'),
-    (10, '22222222-9', 'Tester QA'),
-    (10, '33333333-2', 'Diseñador UX')
+    (10, '11111111-8', 'Jefe de Proyecto',       1),
+    (10, '11111111-0', 'Coordinador Técnico',    0),
+    (10, '11111111-2', 'Asesor Metodológico',    0),
+    (10, '44444444-2', 'Desarrollador Frontend', 0),
+    (10, '22222222-5', 'Desarrollador Backend',  0),
+    (10, '33333333-9', 'Analista de Datos',      0),
+    (10, '22222222-9', 'Tester QA',              0),
+    (10, '33333333-2', 'Diseñador UX',           0)
+;
+
+INSERT INTO credenciales (rut, password, id_tipo) VALUES
+    ('11111111-1', 'pass_jcastillo', 2),
+    ('11111111-2', 'pass_mvera',     2),
+    ('11111111-3', 'pass_apino',     2),
+    ('11111111-4', 'pass_csoto',     2),
+    ('11111111-5', 'pass_rnunez',    2),
+    ('11111111-6', 'pass_plagos',    2),
+    ('11111111-7', 'pass_sdiaz',     2),
+    ('11111111-8', 'pass_iramos',    2),
+    ('11111111-9', 'pass_fmunoz',    2),
+    ('11111111-0', 'pass_dcruz',     2),
+    ('22222222-1', 'pass_ctorres',   3),
+    ('22222222-2', 'pass_dherrera',  3),
+    ('22222222-3', 'pass_smendez',   3),
+    ('22222222-4', 'pass_mflores',   3),
+    ('22222222-5', 'pass_vossa',     3),
+    ('33333333-1', 'pass_cbravo',    3),
+    ('33333333-2', 'pass_rsepulveda',3),
+    ('44444444-1', 'pass_cmunoz',    3),
+    ('44444444-2', 'pass_apena',     3)
 ;
 
 
 -- Check para parte de llenado de datos
 
+/*
 --Cantidad total de empresas
 SELECT COUNT(*) AS cantidad_empresas FROM empresa;
 --Cantidad de postulaciones
@@ -265,6 +279,7 @@ SELECT COUNT(*) AS cantidad_posibles_integrantes FROM integrantes;
 SELECT codigo_interno_e,COUNT(codigo_interno_e) FROM etapa GROUP BY codigo_interno_e;
 -- Cantidad total de equipos armados con los integrantes ya agregados.
 SELECT COUNT(DISTINCT codigo_interno) AS cantidad_equipos FROM equipo_trabajo;
+*/
 
 /*
 Evidencia de todas las querys de verificacion de conteo.
@@ -324,6 +339,7 @@ MariaDB [postulaciones_ct_usm]> SELECT COUNT(DISTINCT codigo_interno) AS cantida
 1 row in set (0,000 sec)
 */
 
+/*
 --parte 1
 SELECT 
     postulacion.numero_postulacion, 
@@ -354,7 +370,7 @@ GROUP BY (postulacion.numero_postulacion)
 | POST-009           | DataMinds SA    | Región de Atacama       | Región del Biobio       | Sede Viña del Mar              |
 | POST-010           | GreenCode SpA   | Región Metropolitana    | Región de Atacama       | Sede Concepcion                |
 +--------------------+-----------------+-------------------------+-------------------------+--------------------------------+
-*/
+
 
 SELECT 
     p.numero_postulacion,
@@ -366,7 +382,7 @@ FROM equipo_trabajo et
     JOIN integrantes e ON e.rut = et.rut
 GROUP BY p.numero_postulacion
 ;
-
+*/
 /*Evidencia de la condicion 3 profes + 5 estudiantes cumplida.
 +--------------------+-------------+--------+-------+
 | numero_postulacion | estudiantes | profes | total |

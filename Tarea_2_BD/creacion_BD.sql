@@ -30,10 +30,16 @@ CREATE TABLE IF NOT EXISTS tipo_integrante (
     descripcion VARCHAR(50) NOT NULL
 ) Engine=InnoDB;
 
+CREATE TABLE IF NOT EXISTS tipo_ingreso (
+    id_tipo  INT PRIMARY KEY AUTO_INCREMENT,
+    descripcion VARCHAR(30) NOT NULL
+) Engine=InnoDB;
+
 CREATE TABLE IF NOT EXISTS tipo_iniciativa (
     id_tipo_in INT PRIMARY KEY AUTO_INCREMENT,
     descripcion VARCHAR(100) NOT NULL
 ) Engine=InnoDB;
+
 -- hasta aqui llegan los catalogos
 
 CREATE TABLE IF NOT EXISTS empresa (
@@ -55,8 +61,8 @@ CREATE TABLE IF NOT EXISTS postulacion (
     objetivo VARCHAR(255) NOT NULL,
     descripcion_soluciones VARCHAR(255) NOT NULL,
     resultados_esperados VARCHAR(255) NOT NULL,
-    nombre_rep1 VARCHAR(100) NOT NULL,
-    nombre_rep2 VARCHAR(100) NOT NULL,
+    -- nombre_rep1 VARCHAR(100) NOT NULL,
+    -- nombre_rep2 VARCHAR(100) NOT NULL,
     presupuesto DECIMAL(12,2) NOT NULL,
     rut_empresa VARCHAR(12) NOT NULL,
     FOREIGN KEY (rut_empresa) REFERENCES empresa(rut_empresa),
@@ -93,10 +99,20 @@ CREATE TABLE IF NOT EXISTS integrantes (
     FOREIGN KEY (id_tipo) REFERENCES tipo_integrante(id_tipo)
 ) Engine=InnoDB;
 
+CREATE TABLE IF NOT EXISTS credenciales (
+    id_usr INT PRIMARY KEY AUTO_INCREMENT,
+    rut VARCHAR(12) ,
+    password VARCHAR(20) NOT NULL,
+    id_tipo INT NOT NULL,
+    FOREIGN KEY (rut) REFERENCES integrantes(rut),
+    FOREIGN KEY (id_tipo) REFERENCES tipo_ingreso(id_tipo)
+) Engine=InnoDB;
+
 CREATE TABLE IF NOT EXISTS equipo_trabajo (
     codigo_interno INT,
     rut VARCHAR(12),
     rol VARCHAR(50) NOT NULL,
+    es_responsable TINYINT NOT NULL,
     PRIMARY KEY (codigo_interno,rut),
     FOREIGN KEY (rut) REFERENCES integrantes(rut),
     FOREIGN KEY (codigo_interno) REFERENCES postulacion(codigo_interno)
@@ -141,7 +157,8 @@ INSERT INTO estado_postulacion (descripcion) VALUES
     ("En revisión"),
     ("Aprobada"),
     ("Rechazada"),
-    ("Cerrada")
+    ("Cerrada"),
+    ("Borrador")
 ;
 
 INSERT INTO tipo_integrante (descripcion) VALUES
@@ -152,6 +169,12 @@ INSERT INTO tipo_integrante (descripcion) VALUES
 INSERT INTO tipo_iniciativa (descripcion) VALUES
     ("Nueva"),
     ("Existente")
+;
+
+INSERT INTO tipo_ingreso (descripcion) VALUES 
+    ("Administrador CT-USM"),
+    ("Coordinador de proyecto"),
+    ("Responsable Academico")
 ;
 
 -- con esto deberia estar casi listo el script de creacion

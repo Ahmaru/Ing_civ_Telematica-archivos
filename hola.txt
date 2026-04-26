@@ -1,0 +1,51 @@
+Para que tu compañero no se relaje mientras tú peleas con el PHP y la base de datos, aquí tienes los puntos clave que debe cumplir el **Frontend**. 
+
+Su misión es que la página sea funcional, que valide que el usuario no meta basura y, por supuesto, ganar esos **5 puntos de bonus** por diseño.
+
+---
+
+### 1. Diseño con Bootstrap (El Bonus)
+Para ganar los puntos extra, no basta con un HTML pelado.
+* **Qué hacer:** Debe incluir el CDN de Bootstrap y usar componentes como `navbar`, `cards` y el `grid system` para que el formulario no sea una lista infinita hacia abajo.
+* **Responsividad:** La página debería verse bien tanto en el monitor de la sala de computación como en el notebook del ayudante.
+
+
+
+### 2. Estructura del Formulario (La "Vista")
+Debe replicar fielmente el **Anexo del PDF**. Esto no es solo poner cuadros de texto; tiene partes complejas:
+* **Inputs correctos:** Usar `<input type="date">` para fechas, `<select>` para los catálogos (Sedes, Regiones, etc.) y `<input type="number">` para el presupuesto.
+* **Secciones Dinámicas:** Aquí es donde se luce. Para el **Equipo de Trabajo** y el **Cronograma**, debería implementar un botón de *"Agregar fila"* 
+(probablemente con un poquito de JavaScript) para que el usuario pueda meter a todos los integrantes que quiera antes de enviar.
+
+### 3. Validaciones de Lado del Cliente
+Tu compañero es la primera línea de defensa para que a tu Backend no le lleguen datos vacíos o malos.
+* **Campos Obligatorios:** Usar el atributo `required`.
+* **Lógica de RUT:** Podría implementar una pequeña función en JS para verificar que el RUT ingresado sea válido (con dígito verificador correcto).
+* **Máximos y Mínimos:** Que el presupuesto no pueda ser negativo y que los textos no superen el largo de tus `VARCHAR` en la base de datos.
+
+### 4. Gestión de los Logins (Vistas diferenciadas)
+Como definimos que el **Coordinador** y el **Académico** ven cosas distintas:
+* **Dashboard Académico:** Una vista donde vea un botón de "Nueva Postulación" y una tabla con sus proyectos enviados.
+* **Dashboard Coordinador:** Una vista tipo "Admin" donde vea la lista de todos los proyectos y pueda, quizás, cambiarles el estado (Aprobado/Rechazado).
+* **Control de visibilidad:** Usar PHP para decidir qué botones o menús mostrar según el `id_rol_sistema` que tú le pases en la sesión.
+
+
+
+### 5. Feedback al Usuario (UX)
+Nada peor que apretar "Enviar" y que la página se quede en blanco.
+* **Mensajes de éxito/error:** Debe preparar "Alerts" de Bootstrap que digan: *"¡Postulación enviada con éxito!"* o *"Error: El RUT de la empresa ya existe"*.
+* **Confirmación:** Un modal de "confirmación" antes de borrar o enviar algo importante.
+
+---
+
+### 💡 El punto de unión (Donde chocan los dos)
+Tu compañero debe entregarte un formulario con los nombres de los campos (`name="nombre_iniciativa"`, etc.) que coincidan exactamente con lo que tú vas a buscar en tu `$_POST`.
+
+**Resumen de su To-Do List:**
+1.  Setup de Bootstrap.
+2.  Formulario completo (incluyendo tablas dinámicas de integrantes).
+3.  Página de Login.
+4.  Vistas de Dashboard para los dos roles.
+5.  Manejo de alertas y validaciones.
+
+¿Sientes que con esta división están parejos en carga de trabajo? ¡Ojo, que las tablas dinámicas de integrantes le van a sacar un par de canas verdes a tu compa! 7u7
