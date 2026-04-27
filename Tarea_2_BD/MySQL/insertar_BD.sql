@@ -244,7 +244,7 @@ INSERT INTO equipo_trabajo (codigo_interno, rut, rol, es_responsable) VALUES
 ;
 
 INSERT INTO credenciales (rut, password, id_tipo) VALUES
-    ('11111111-1', 'pass_jcastillo', 2),
+    ('11111111-1', 'ola', 2),
     ('11111111-2', 'pass_mvera',     2),
     ('11111111-3', 'pass_apino',     2),
     ('11111111-4', 'pass_csoto',     2),
