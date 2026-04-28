@@ -24,3 +24,13 @@ FROM (((((((postulacion AS p
 
 
 --Segunda view pa lo que no es academic UwU
+
+
+--SQL FUNCTION
+CREATE OR REPLACE FUNCTION fn_cant_postxint(param VARCHAR(20)) 
+RETURNS INT DETERMINISTIC
+BEGIN
+    DECLARE total INT;
+    SELECT COUNT(*) INTO total FROM equipo_trabajo WHERE rut = param;
+    RETURN total;
+END;
