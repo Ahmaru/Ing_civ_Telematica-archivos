@@ -14,7 +14,6 @@ if (!isset($_SESSION['rut'])){
 if($_SESSION['rol'] === 1){
 
     include 'admin.php';
-
 } else {
 
 }
