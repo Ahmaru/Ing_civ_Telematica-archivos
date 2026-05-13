@@ -72,8 +72,8 @@ CREATE TABLE IF NOT EXISTS postulacion (
     FOREIGN KEY (id_reg_ejec) REFERENCES regiones(id_regiones),
     id_reg_impc INT,
     FOREIGN KEY (id_reg_impc) REFERENCES regiones(id_regiones),
-    id_tipo_inciativa INT,
-    FOREIGN KEY (id_tipo_inciativa) REFERENCES tipo_iniciativa(id_tipo_in),
+    id_tipo_iniciativa INT,
+    FOREIGN KEY (id_tipo_iniciativa) REFERENCES tipo_iniciativa(id_tipo_in),
     id_estado_postulacion INT,
     FOREIGN KEY (id_estado_postulacion) REFERENCES estado_postulacion(id_estado)
 ) Engine=InnoDB;
@@ -102,7 +102,7 @@ CREATE TABLE IF NOT EXISTS integrantes (
 CREATE TABLE IF NOT EXISTS credenciales (
     id_usr INT PRIMARY KEY AUTO_INCREMENT,
     rut VARCHAR(12) ,
-    password VARCHAR(20) NOT NULL,
+    password VARCHAR(70) NOT NULL,
     id_tipo INT NOT NULL,
     FOREIGN KEY (rut) REFERENCES integrantes(rut),
     FOREIGN KEY (id_tipo) REFERENCES tipo_ingreso(id_tipo)
@@ -116,6 +116,18 @@ CREATE TABLE IF NOT EXISTS equipo_trabajo (
     PRIMARY KEY (codigo_interno,rut),
     FOREIGN KEY (rut) REFERENCES integrantes(rut),
     FOREIGN KEY (codigo_interno) REFERENCES postulacion(codigo_interno)
+) Engine=InnoDB;
+
+CREATE TABLE IF NOT EXISTS evaluacion (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    codigo_interno INT NOT NULL,
+    rut_evaluador VARCHAR(12) NOT NULL,
+    estado_nuevo INT NOT NULL,
+    fecha_evaluacion TIMESTAMP DEFAULT NOW(),
+    comentarios VARCHAR(255),
+    FOREIGN KEY (codigo_interno) REFERENCES postulacion(codigo_interno),
+    FOREIGN KEY (rut_evaluador) REFERENCES integrantes(rut),
+    FOREIGN KEY (estado_nuevo) REFERENCES estado_postulacion(id_estado)
 ) Engine=InnoDB;
 
 -- Aqui comenzamos a llenar los catalogos como son valores constantes

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Postulación - CT USM</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; max-width: 800px; margin-left: auto; margin-right: auto; }
+        .header { border-bottom: 2px solid #ccc; padding: 10px 0; }
+        .form-group { margin: 15px 0; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; }
+        input, select, textarea { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; font-family: Arial, sans-serif; }
+        textarea { min-height: 100px; resize: vertical; }
+        button { padding: 10px 20px; background-color: #4CAF50; color: white; border: none; cursor: pointer; border-radius: 4px; margin-right: 10px; }
+        button:hover { background-color: #45a049; }
+        .btn-cancel { background-color: #f44336; }
+        .btn-cancel:hover { background-color: #da190b; }
+        .required { color: red; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Nueva Postulación</h1>
+        <p>Completa todos los campos marcados con <span class="required">*</span></p>
+    </div>
+
+    <form action="../php/registrar.php" method="POST">
+
+        <div class="form-group">
+            <label>Nombre de la Iniciativa <span class="required">*</span></label>
+            <input type="text" name="nombre_iniciativa" required placeholder="Ej: App de Sostenibilidad">
+        </div>
+
+        <div class="form-group">
+            <label>Objetivo <span class="required">*</span></label>
+            <textarea name="objetivo" required placeholder="Describe el objetivo principal..."></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>Descripción de Soluciones <span class="required">*</span></label>
+            <textarea name="descripcion_soluciones" required placeholder="Describe las soluciones propuestas..."></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>Resultados Esperados <span class="required">*</span></label>
+            <textarea name="resultados_esperados" required placeholder="¿Cuáles son los resultados esperados?"></textarea>
+        </div>
+
+        <div class="form-group">
+            <label>Presupuesto (CLP) <span class="required">*</span></label>
+            <input type="number" name="presupuesto" required min="0" step="0.01" placeholder="Ej: 5000000">
+        </div>
+
+        <div class="form-group">
+            <label>RUT Empresa <span class="required">*</span></label>
+            <input type="text" name="rut_empresa" required placeholder="Ej: 12345678-9">
+        </div>
+
+        <div class="form-group">
+            <label>Sede <span class="required">*</span></label>
+            <select name="id_sede" required>
+                <option value="">Selecciona una sede...</option>
+                <option value="1">Campus Casa central Valparaiso</option>
+                <option value="2">Campus San Joaquin</option>
+                <option value="3">Campus Vitacura</option>
+                <option value="4">Sede Viña del Mar</option>
+                <option value="5">Sede Concepcion</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Región de Ejecución <span class="required">*</span></label>
+            <select name="id_reg_ejec" required>
+                <option value="">Selecciona región...</option>
+                <option value="1">Región de Tarapaca</option>
+                <option value="2">Región de Antofagasta</option>
+                <option value="3">Región de Atacama</option>
+                <option value="4">Región de Coquimbo</option>
+                <option value="5">Región de Valparaiso</option>
+                <option value="6">Región del Libertador Bernardo O'Higgins</option>
+                <option value="7">Región del Maule</option>
+                <option value="8">Región del Biobio</option>
+                <option value="9">Región de la Araucania</option>
+                <option value="10">Región de Los Lagos</option>
+                <option value="11">Región de Aisen</option>
+                <option value="12">Región de Magallanes y Antartica Chilena</option>
+                <option value="13">Región Metropolitana</option>
+                <option value="14">Región de Los Rios</option>
+                <option value="15">Región de Arica-Parinacota</option>
+                <option value="16">Región de Nuble</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Región de Impacto <span class="required">*</span></label>
+            <select name="id_reg_impc" required>
+                <option value="">Selecciona región...</option>
+                <option value="1">Región de Tarapaca</option>
+                <option value="2">Región de Antofagasta</option>
+                <option value="3">Región de Atacama</option>
+                <option value="4">Región de Coquimbo</option>
+                <option value="5">Región de Valparaiso</option>
+                <option value="6">Región del Libertador Bernardo O'Higgins</option>
+                <option value="7">Región del Maule</option>
+                <option value="8">Región del Biobio</option>
+                <option value="9">Región de la Araucania</option>
+                <option value="10">Región de Los Lagos</option>
+                <option value="11">Región de Aisen</option>
+                <option value="12">Región de Magallanes y Antartica Chilena</option>
+                <option value="13">Región Metropolitana</option>
+                <option value="14">Región de Los Rios</option>
+                <option value="15">Región de Arica-Parinacota</option>
+                <option value="16">Región de Nuble</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Tipo de Iniciativa <span class="required">*</span></label>
+            <select name="id_tipo_iniciativa" required>
+                <option value="">Selecciona tipo...</option>
+                <option value="1">Nueva</option>
+                <option value="2">Existente</option>
+            </select>
+        </div>
+
+        <div style="margin-top: 30px;">
+            <button type="submit">Crear Postulación</button>
+            <button type="button" class="btn-cancel" onclick="history.back()">Cancelar</button>
+        </div>
+
+    </form>
+</body>
+</html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Evaluar Postulación - CT USM</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; max-width: 900px; margin-left: auto; margin-right: auto; }
+        .header { border-bottom: 2px solid #ccc; padding: 10px 0; }
+        .info-box { background-color: #f9f9f9; padding: 15px; border-left: 4px solid #008CBA; margin: 20px 0; border-radius: 4px; }
+        .info-box h3 { margin-top: 0; }
+        .info-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 10px; }
+        .info-field { }
+        .info-field strong { display: block; margin-bottom: 5px; color: #333; }
+        .form-group { margin: 15px 0; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; }
+        select, textarea { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; font-family: Arial, sans-serif; }
+        textarea { min-height: 120px; resize: vertical; }
+        button { padding: 10px 20px; background-color: #4CAF50; color: white; border: none; cursor: pointer; border-radius: 4px; margin-right: 10px; font-size: 16px; }
+        button:hover { background-color: #45a049; }
+        .btn-cancel { background-color: #f44336; }
+        .btn-cancel:hover { background-color: #da190b; }
+        .required { color: red; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Evaluar Postulación</h1>
+        <p><a href="evaluador.html">&larr; Volver al panel</a></p>
+    </div>
+
+    <div class="info-box" id="infoBox">
+        <h3>Información de la Postulación</h3>
+        <div class="info-row">
+            <div class="info-field">
+                <strong>N° Postulación:</strong>
+                <span id="numPostulacion">Cargando...</span>
+            </div>
+            <div class="info-field">
+                <strong>Iniciativa:</strong>
+                <span id="iniciativa">Cargando...</span>
+            </div>
+        </div>
+        <div class="info-row">
+            <div class="info-field">
+                <strong>Empresa:</strong>
+                <span id="empresa">Cargando...</span>
+            </div>
+            <div class="info-field">
+                <strong>Presupuesto:</strong>
+                <span id="presupuesto">Cargando...</span>
+            </div>
+        </div>
+        <div class="info-field">
+            <strong>Objetivo:</strong>
+            <p id="objetivo">Cargando...</p>
+        </div>
+        <div class="info-field">
+            <strong>Descripción de Soluciones:</strong>
+            <p id="descripcion">Cargando...</p>
+        </div>
+    </div>
+
+    <form action="../php/evaluacion.php" method="POST">
+        <input type="hidden" id="codigoInterno" name="codigo_interno" value="">
+
+        <div class="form-group">
+            <label>Decisión <span class="required">*</span></label>
+            <select name="estado_nuevo" id="estadoNuevo" required>
+                <option value="">Selecciona una decisión...</option>
+                <option value="2">Aprobada</option>
+                <option value="3">Rechazada</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label>Comentarios / Retroalimentación <span class="required">*</span></label>
+            <textarea name="comentarios" required placeholder="Ingresa tus comentarios sobre la evaluación..."></textarea>
+        </div>
+
+        <div style="margin-top: 30px;">
+            <button type="submit">Enviar Evaluación</button>
+            <button type="button" class="btn-cancel" onclick="history.back()">Cancelar</button>
+        </div>
+    </form>
+
+    <script>
+        // Obtener código de la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const codigo = urlParams.get('codigo');
+
+        if(!codigo) {
+            document.getElementById('infoBox').innerHTML = '<p style="color: red;">Error: No se especificó postulación</p>';
+        } else {
+            document.getElementById('codigoInterno').value = codigo;
+
+            // Cargar datos de la postulación
+            fetch('../php/obtener_postulacion.php?codigo=' + codigo)
+                .then(response => response.json())
+                .then(data => {
+                    if(data.error) {
+                        alert('Error: ' + data.error);
+                        history.back();
+                        return;
+                    }
+
+                    document.getElementById('numPostulacion').textContent = data.numero_postulacion;
+                    document.getElementById('iniciativa').textContent = data.nombre_iniciativa;
+                    document.getElementById('empresa').textContent = data.empresa;
+                    document.getElementById('presupuesto').textContent = '$' + data.presupuesto;
+                    document.getElementById('objetivo').textContent = data.objetivo;
+                    document.getElementById('descripcion').textContent = data.descripcion_soluciones;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error al cargar la postulación');
+                });
+        }
+    </script>
+</body>
+</html>

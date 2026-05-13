@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Postulación - CT USM</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; max-width: 800px; margin-left: auto; margin-right: auto; }
+        .header { border-bottom: 2px solid #ccc; padding: 10px 0; margin-bottom: 20px; }
+        .back-link { color: #008CBA; text-decoration: none; font-weight: bold; }
+        .back-link:hover { text-decoration: underline; }
+        .form-group { margin: 15px 0; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; }
+        input, select, textarea { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; font-family: Arial, sans-serif; }
+        textarea { min-height: 100px; resize: vertical; }
+        button { padding: 10px 20px; background-color: #4CAF50; color: white; border: none; cursor: pointer; border-radius: 4px; margin-right: 10px; }
+        button:hover { background-color: #45a049; }
+        .btn-cancel { background-color: #f44336; }
+        .btn-cancel:hover { background-color: #da190b; }
+        .required { color: red; }
+        .loading { text-align: center; padding: 40px; color: #666; }
+        .error { color: red; padding: 20px; background-color: #ffe0e0; border-radius: 4px; margin-bottom: 20px; }
+        .success { color: green; padding: 20px; background-color: #e0ffe0; border-radius: 4px; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <p><a href="postulante.html" class="back-link">← Volver a mis postulaciones</a></p>
+        <h1>Editar Postulación</h1>
+        <p style="color: #666;">⚠️ Solo puedes editar postulaciones en estado "Borrador"</p>
+    </div>
+
+    <div id="content">
+        <div class="loading">Cargando postulación...</div>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const codigo = urlParams.get('codigo');
+
+        if (!codigo) {
+            document.getElementById('content').innerHTML = '<div class="error">Error: No se especificó postulación</div>';
+        } else {
+            // Cargar datos de la postulación
+            fetch('../php/editar_postulacion.php?codigo=' + codigo)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        document.getElementById('content').innerHTML = `<div class="error">Error: ${data.error}</div>`;
+                        return;
+                    }
+
+                    const html = `
+                        <form id="editForm" onsubmit="guardar(event)">
+                            <input type="hidden" name="codigo_interno" value="${data.codigo_interno}">
+
+                            <div class="form-group">
+                                <label>Nombre de la Iniciativa <span class="required">*</span></label>
+                                <input type="text" name="nombre_iniciativa" value="${data.nombre_iniciativa}" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Objetivo <span class="required">*</span></label>
+                                <textarea name="objetivo" required>${data.objetivo}</textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Descripción de Soluciones <span class="required">*</span></label>
+                                <textarea name="descripcion_soluciones" required>${data.descripcion_soluciones}</textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Resultados Esperados <span class="required">*</span></label>
+                                <textarea name="resultados_esperados" required>${data.resultados_esperados}</textarea>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Presupuesto (CLP) <span class="required">*</span></label>
+                                <input type="number" name="presupuesto" value="${data.presupuesto}" required min="0" step="0.01">
+                            </div>
+
+                            <div class="form-group">
+                                <label>RUT Empresa <span class="required">*</span></label>
+                                <input type="text" name="rut_empresa" value="${data.rut_empresa}" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Sede <span class="required">*</span></label>
+                                <select name="id_sede" required>
+                                    <option value="">Selecciona una sede...</option>
+                                    <option value="1" ${data.id_sede == 1 ? 'selected' : ''}>Campus Casa central Valparaiso</option>
+                                    <option value="2" ${data.id_sede == 2 ? 'selected' : ''}>Campus San Joaquin</option>
+                                    <option value="3" ${data.id_sede == 3 ? 'selected' : ''}>Campus Vitacura</option>
+                                    <option value="4" ${data.id_sede == 4 ? 'selected' : ''}>Sede Viña del Mar</option>
+                                    <option value="5" ${data.id_sede == 5 ? 'selected' : ''}>Sede Concepcion</option>
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Región de Ejecución <span class="required">*</span></label>
+                                <select name="id_reg_ejec" required>
+                                    <option value="">Selecciona región...</option>
+                                    ${generarOpciones(data.id_reg_ejec)}
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Región de Impacto <span class="required">*</span></label>
+                                <select name="id_reg_impc" required>
+                                    <option value="">Selecciona región...</option>
+                                    ${generarOpciones(data.id_reg_impc)}
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Tipo de Iniciativa <span class="required">*</span></label>
+                                <select name="id_tipo_iniciativa" required>
+                                    <option value="">Selecciona tipo...</option>
+                                    <option value="1" ${data.id_tipo_iniciativa == 1 ? 'selected' : ''}>Nueva</option>
+                                    <option value="2" ${data.id_tipo_iniciativa == 2 ? 'selected' : ''}>Existente</option>
+                                </select>
+                            </div>
+
+                            <div style="margin-top: 30px;">
+                                <button type="submit">Guardar Cambios</button>
+                                <button type="button" class="btn-cancel" onclick="history.back()">Cancelar</button>
+                            </div>
+                        </form>
+                    `;
+
+                    document.getElementById('content').innerHTML = html;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('content').innerHTML = '<div class="error">Error al cargar la postulación</div>';
+                });
+        }
+
+        function generarOpciones(selected) {
+            const regiones = [
+                {id: 1, nombre: "Región de Tarapaca"},
+                {id: 2, nombre: "Región de Antofagasta"},
+                {id: 3, nombre: "Región de Atacama"},
+                {id: 4, nombre: "Región de Coquimbo"},
+                {id: 5, nombre: "Región de Valparaiso"},
+                {id: 6, nombre: "Región del Libertador Bernardo O'Higgins"},
+                {id: 7, nombre: "Región del Maule"},
+                {id: 8, nombre: "Región del Biobio"},
+                {id: 9, nombre: "Región de la Araucania"},
+                {id: 10, nombre: "Región de Los Lagos"},
+                {id: 11, nombre: "Región de Aisen"},
+                {id: 12, nombre: "Región de Magallanes y Antartica Chilena"},
+                {id: 13, nombre: "Región Metropolitana"},
+                {id: 14, nombre: "Región de Los Rios"},
+                {id: 15, nombre: "Región de Arica-Parinacota"},
+                {id: 16, nombre: "Región de Nuble"}
+            ];
+
+            return regiones.map(r =>
+                `<option value="${r.id}" ${r.id == selected ? 'selected' : ''}>${r.nombre}</option>`
+            ).join('');
+        }
+
+        function guardar(event) {
+            event.preventDefault();
+            const form = document.getElementById('editForm');
+            const formData = new FormData(form);
+
+            fetch('../php/editar_postulacion.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    const content = document.getElementById('content');
+                    content.innerHTML = `
+                        <div class="success">
+                            <strong>¡Éxito!</strong> Postulación actualizada correctamente.
+                            <br><br>
+                            <button class="btn" onclick="location.href='postulante.html'">Volver a mis postulaciones</button>
+                        </div>
+                    `;
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error al guardar los cambios');
+            });
+        }
+    </script>
+</body>
+</html>

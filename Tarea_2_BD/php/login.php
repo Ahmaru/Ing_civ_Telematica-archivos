@@ -13,10 +13,10 @@ $key = $ola->fetch(PDO::FETCH_ASSOC);
 if ($key){
     
     if(password_verify($psswrd,$key['password'])){
-        $_SESSION['rut'] = $key['rut'];
+        $_SESSION['user'] = $key['rut'];
         $_SESSION['rol'] = $key['id_tipo'];
 
-        header("Location: ../php/frontpage.php");
+        header("Location: frontpage.php");
         exit();
     } else {
         echo "Credenciales incorrectas, intente nuevamente.";
