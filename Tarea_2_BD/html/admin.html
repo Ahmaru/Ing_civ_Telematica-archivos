@@ -74,6 +74,7 @@
         <button class="tab-btn active" onclick="mostrarTab('evaluadores')">Evaluadores</button>
         <button class="tab-btn" onclick="mostrarTab('postulaciones')">Postulaciones</button>
         <button class="tab-btn" onclick="mostrarTab('asignaciones')">Asignar Evaluador</button>
+        <button class="tab-btn" onclick="mostrarTab('auditoria')">Auditoría</button>
     </div>
 
     <!-- TAB 1: EVALUADORES -->
@@ -155,7 +156,39 @@
         </table>
     </div>
 
+    <!-- TAB 4: AUDITORÍA -->
+    <div id="auditoria" class="tab-content">
+        <h2>Historial de Cambios</h2>
+        <table id="auditoriaTable">
+            <thead>
+                <tr>
+                    <th>Postulación</th>
+                    <th>Iniciativa</th>
+                    <th>Estado Anterior</th>
+                    <th>Estado Nuevo</th>
+                    <th>Fecha Cambio</th>
+                    <th>Usuario</th>
+                </tr>
+            </thead>
+            <tbody id="tbody-auditoria">
+                <tr>
+                    <td colspan="6" style="text-align: center; padding: 20px;">Cargando...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
     <script>
+        // Cargar nombre del usuario
+        fetch('../php/obtener_usuario.php')
+            .then(response => response.json())
+            .then(data => {
+                if (data.nombre) {
+                    document.getElementById('usuario').textContent = data.nombre;
+                }
+            })
+            .catch(error => console.error('Error:', error));
+
         // Funciones de navegación de tabs
         function mostrarTab(tabName) {
             // Ocultar todos los tabs
@@ -170,6 +203,7 @@
             if(tabName === 'evaluadores') cargarEvaluadores();
             if(tabName === 'postulaciones') cargarPostulaciones();
             if(tabName === 'asignaciones') cargarAsignaciones();
+            if(tabName === 'auditoria') cargarAuditoria();
         }
 
         // Cargar estadísticas
@@ -177,6 +211,10 @@
             fetch('../php/admin.php?action=stats')
                 .then(response => response.json())
                 .then(data => {
+                    if(data.error) {
+                        console.error('Error:', data.error);
+                        return;
+                    }
                     document.getElementById('totalPost').textContent = data.total;
                     document.getElementById('enRevision').textContent = data.en_revision;
                     document.getElementById('aprobadas').textContent = data.aprobadas;
@@ -190,6 +228,11 @@
             fetch('../php/admin.php?action=evaluadores')
                 .then(response => response.json())
                 .then(data => {
+                    if(data.error) {
+                        console.error('Error:', data.error);
+                        document.getElementById('tbody-evaluadores').innerHTML = '<tr><td colspan="5" style="text-align: center; color: red;">Error al cargar</td></tr>';
+                        return;
+                    }
                     const tbody = document.getElementById('tbody-evaluadores');
                     tbody.innerHTML = '';
 
@@ -219,6 +262,11 @@
             fetch('../php/admin.php?action=postulaciones')
                 .then(response => response.json())
                 .then(data => {
+                    if(data.error) {
+                        console.error('Error:', data.error);
+                        document.getElementById('tbody-postulaciones').innerHTML = '<tr><td colspan="6" style="text-align: center; color: red;">Error al cargar</td></tr>';
+                        return;
+                    }
                     const tbody = document.getElementById('tbody-postulaciones');
                     tbody.innerHTML = '';
 
@@ -236,7 +284,7 @@
                             <td>${post.numero_postulacion}</td>
                             <td>${post.nombre_iniciativa}</td>
                             <td>${post.empresa}</td>
-                            <td>$${post.presupuesto}</td>
+                            <td>${post.presupuesto.toLocaleString('es-CL', {style: 'currency', currency: 'CLP'})}</td>
                             <td><span class="badge ${badge}">${post.estado}</span></td>
                             <td>${post.fecha_postulacion}</td>
                         </tr>`;
@@ -254,6 +302,10 @@
             fetch('../php/admin.php?action=postulaciones_sin_evaluador')
                 .then(response => response.json())
                 .then(data => {
+                    if(data.error) {
+                        console.error('Error:', data.error);
+                        return;
+                    }
                     const select = document.getElementById('selectPostulacion');
                     select.innerHTML = '<option value="">Selecciona postulación...</option>';
                     data.forEach(post => {
@@ -265,6 +317,10 @@
             fetch('../php/admin.php?action=evaluadores')
                 .then(response => response.json())
                 .then(data => {
+                    if(data.error) {
+                        console.error('Error:', data.error);
+                        return;
+                    }
                     const select = document.getElementById('selectEvaluador');
                     select.innerHTML = '<option value="">Selecciona evaluador...</option>';
                     data.forEach(ev => {
@@ -276,6 +332,11 @@
             fetch('../php/admin.php?action=asignaciones')
                 .then(response => response.json())
                 .then(data => {
+                    if(data.error) {
+                        console.error('Error:', data.error);
+                        document.getElementById('tbody-asignaciones').innerHTML = '<tr><td colspan="3" style="text-align: center; color: red;">Error al cargar</td></tr>';
+                        return;
+                    }
                     const tbody = document.getElementById('tbody-asignaciones');
                     tbody.innerHTML = '';
 
@@ -311,6 +372,10 @@
             })
             .then(response => response.json())
             .then(data => {
+                if(data.error) {
+                    alert('Error: ' + data.error);
+                    return;
+                }
                 if(data.success) {
                     alert('Evaluador asignado correctamente');
                     cargarAsignaciones();
@@ -320,8 +385,42 @@
             });
         }
 
+        function cargarAuditoria() {
+            fetch('../php/admin_auditoria.php')
+                .then(response => response.json())
+                .then(data => {
+                    if(data.error) {
+                        console.error('Error:', data.error);
+                        document.getElementById('tbody-auditoria').innerHTML = '<tr><td colspan="6" style="text-align: center; color: red;">Error al cargar</td></tr>';
+                        return;
+                    }
+                    const tbody = document.getElementById('tbody-auditoria');
+                    tbody.innerHTML = '';
+
+                    if(data.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No hay cambios registrados</td></tr>';
+                        return;
+                    }
+
+                    data.forEach(audit => {
+                        const row = `<tr>
+                            <td>${audit.numero_postulacion}</td>
+                            <td>${audit.nombre_iniciativa}</td>
+                            <td>${audit.estado_anterior || 'Creada'}</td>
+                            <td>${audit.estado_nuevo}</td>
+                            <td>${audit.fecha_cambio}</td>
+                            <td>${audit.usuario}</td>
+                        </tr>`;
+                        tbody.innerHTML += row;
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('tbody-auditoria').innerHTML = '<tr><td colspan="6" style="text-align: center; color: red;">Error al cargar</td></tr>';
+                });
+        }
+
         // Cargar estadísticas al iniciar
-        document.getElementById('usuario').textContent = sessionStorage.getItem('user') || 'Admin';
         cargarEstadisticas();
     </script>
 </body>

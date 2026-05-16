@@ -13,7 +13,7 @@ if (!isset($_SESSION['user']) || $_SESSION['rol'] != 3) {
 
 try {
     // Obtener todas las postulaciones donde el usuario es responsable
-    $query = $conn->prepare("SELECT * FROM postulaciones_vista_academic WHERE Responsable = ? ;");
+    $query = $conn->prepare("SELECT * FROM postulaciones_vista_academic WHERE responsable = ?");
 
     $query->execute([$_SESSION['user']]);
     $postulaciones = $query->fetchAll(PDO::FETCH_ASSOC);

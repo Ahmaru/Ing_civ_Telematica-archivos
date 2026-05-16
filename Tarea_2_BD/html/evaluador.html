@@ -29,7 +29,10 @@
     <div class="header">
         <h1>Panel Evaluador</h1>
         <div>
-            <span>Usuario: <strong id="usuario">Cargando...</strong></span>
+            <span>Bienvenido: <strong id="usuario">Cargando...</strong></span>
+            <span id="pendientesContainer" style="margin-left: 20px; display: none;">
+                Postulaciones pendientes: <span id="pendientesCount" class="badge" style="background-color: #FF9800; padding: 4px 8px; border-radius: 4px; color: white;">0</span>
+            </span>
             <a href="../php/logout.php" class="btn btn-danger">Salir</a>
         </div>
     </div>
@@ -59,6 +62,32 @@
     </table>
 
     <script>
+        // Cargar nombre del usuario y contador de pendientes
+        fetch('../php/obtener_usuario.php')
+            .then(response => response.json())
+            .then(data => {
+                if (data.nombre) {
+                    document.getElementById('usuario').textContent = data.nombre;
+                }
+            })
+            .catch(error => console.error('Error:', error));
+
+        // Cargar contador de postulaciones pendientes
+        function cargarPendientes() {
+            fetch('../php/evaluador_pendientes_count.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        console.error('Error:', data.error);
+                        return;
+                    }
+                    const total = data.total || 0;
+                    document.getElementById('pendientesCount').textContent = total;
+                    document.getElementById('pendientesContainer').style.display = total > 0 ? 'inline-block' : 'none';
+                })
+                .catch(error => console.error('Error cargando pendientes:', error));
+        }
+
         // Cargar postulaciones en revisión asignadas al evaluador
         function cargarPostulaciones(busqueda = '') {
             let url = '../php/evaluador.php';
@@ -69,9 +98,13 @@
             fetch(url)
                 .then(response => response.json())
                 .then(data => {
-                    document.getElementById('usuario').textContent = sessionStorage.getItem('user') || 'Evaluador';
                     const tbody = document.getElementById('tbody');
                     tbody.innerHTML = '';
+
+                    if(data.error) {
+                        tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: red;">Error: ' + data.error + '</td></tr>';
+                        return;
+                    }
 
                     if(data.length === 0) {
                         tbody.innerHTML = '<tr><td colspan="7" style="text-align: center;">No hay postulaciones asignadas</td></tr>';
@@ -113,6 +146,7 @@
 
         // Cargar postulaciones al iniciar
         cargarPostulaciones();
+        cargarPendientes();
 
         // Permitir buscar con Enter
         document.getElementById('searchInput').addEventListener('keypress', function(e) {

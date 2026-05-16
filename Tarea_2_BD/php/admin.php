@@ -133,52 +133,18 @@ try {
             exit();
         }
 
-        // Verificar que la postulación existe y está en revisión
-        $check_post = $conn->prepare("
-            SELECT id_estado_postulacion FROM postulacion WHERE codigo_interno = ?
-        ");
-        $check_post->execute([$codigo]);
-        $post = $check_post->fetch(PDO::FETCH_ASSOC);
-
-        if (!$post || $post['id_estado_postulacion'] != 1) {
+        try {
+            // Usar procedure sp_asignar_evaluador
+            $stmt = $conn->prepare("CALL sp_asignar_evaluador(?, ?)");
+            if ($stmt->execute([$codigo, $rut])) {
+                echo json_encode(['success' => true, 'message' => 'Evaluador asignado correctamente']);
+            } else {
+                http_response_code(500);
+                echo json_encode(['success' => false, 'message' => 'Error al asignar evaluador']);
+            }
+        } catch (Exception $e) {
             http_response_code(400);
-            echo json_encode(['success' => false, 'message' => 'Postulación inválida o no está en revisión']);
-            exit();
-        }
-
-        // Verificar que el evaluador existe
-        $check_eval = $conn->prepare("
-            SELECT id_usr FROM credenciales WHERE rut = ? AND id_tipo = 2
-        ");
-        $check_eval->execute([$rut]);
-        if (!$check_eval->fetch()) {
-            http_response_code(400);
-            echo json_encode(['success' => false, 'message' => 'Evaluador no existe']);
-            exit();
-        }
-
-        // Verificar que no esté ya asignado
-        $check_asignado = $conn->prepare("
-            SELECT id FROM evaluacion WHERE codigo_interno = ? AND rut_evaluador = ?
-        ");
-        $check_asignado->execute([$codigo, $rut]);
-        if ($check_asignado->fetch()) {
-            http_response_code(400);
-            echo json_encode(['success' => false, 'message' => 'Evaluador ya está asignado a esta postulación']);
-            exit();
-        }
-
-        // Insertar asignación (estado inicial = 1 = En revisión)
-        $insert = $conn->prepare("
-            INSERT INTO evaluacion (codigo_interno, rut_evaluador, estado_nuevo, fecha_evaluacion)
-            VALUES (?, ?, ?, NOW())
-        ");
-
-        if ($insert->execute([$codigo, $rut, 1])) {
-            echo json_encode(['success' => true, 'message' => 'Evaluador asignado correctamente']);
-        } else {
-            http_response_code(500);
-            echo json_encode(['success' => false, 'message' => 'Error al asignar evaluador']);
+            echo json_encode(['success' => false, 'message' => $e->getMessage()]);
         }
     }
 

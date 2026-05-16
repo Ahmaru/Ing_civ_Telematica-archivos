@@ -15,39 +15,29 @@ try {
     // Obtener búsqueda opcional
     $busqueda = $_GET['q'] ?? '';
 
-    // Query: postulaciones EN REVISIÓN (v_postulaciones_evaluador)
-    // asignadas al evaluador logueado
+    // Query: postulaciones EN REVISIÓN asignadas al evaluador logueado
     $sql = "
         SELECT
             p.codigo_interno,
-            v.N_postulacion as numero_postulacion,
-            v.Iniciativa as nombre_iniciativa,
+            p.numero_postulacion,
+            p.nombre_iniciativa,
             empresa.nombre as empresa,
-            v.Estado as estado,
+            ep.descripcion as estado,
             p.fecha_postulacion,
-            v.Tipo_iniciativa as tipo_iniciativa
+            ti.descripcion as tipo_iniciativa
         FROM postulacion p
-        JOIN (
-            SELECT p.numero_postulacion AS N_postulacion,
-                   p.codigo_interno,
-                   p.nombre_iniciativa AS Iniciativa,
-                   ep.descripcion AS Estado,
-                   ti.descripcion AS Tipo_iniciativa
-            FROM postulacion p
-            JOIN estado_postulacion ep ON p.id_estado_postulacion = ep.id_estado
-            JOIN tipo_iniciativa ti ON p.id_tipo_iniciativa = ti.id_tipo_in
-            WHERE p.id_estado_postulacion = 1
-        ) v ON p.codigo_interno = v.codigo_interno
         JOIN empresa ON p.rut_empresa = empresa.rut_empresa
+        JOIN estado_postulacion ep ON p.id_estado_postulacion = ep.id_estado
+        JOIN tipo_iniciativa ti ON p.id_tipo_iniciativa = ti.id_tipo_in
         JOIN evaluacion e ON p.codigo_interno = e.codigo_interno
-        WHERE e.rut_evaluador = ?
+        WHERE e.rut_evaluador = ? AND p.id_estado_postulacion = 1
     ";
 
     // Si hay búsqueda, agregar filtro
     if (!empty($busqueda)) {
         $sql .= " AND (
-            v.N_postulacion LIKE ?
-            OR v.Iniciativa LIKE ?
+            p.numero_postulacion LIKE ?
+            OR p.nombre_iniciativa LIKE ?
             OR empresa.nombre LIKE ?
         )";
     }

@@ -63,32 +63,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     try {
-        // Verificar que la empresa existe
-        $check_empresa = $conn->prepare("SELECT rut_empresa FROM empresa WHERE rut_empresa = ?");
-        $check_empresa->execute([$rut_empresa]);
-        if (!$check_empresa->fetch()) {
-            throw new Exception("Empresa no existe");
-        }
+        // Generar número de postulación secuencial: POST-XXX
+        $last_post = $conn->query("SELECT MAX(CAST(SUBSTRING(numero_postulacion, 6) AS UNSIGNED)) as max_num FROM postulacion WHERE numero_postulacion LIKE 'POST-%'")->fetch(PDO::FETCH_ASSOC);
+        $next_num = ($last_post['max_num'] ?? 0) + 1;
+        $numero_postulacion = 'POST-' . str_pad($next_num, 3, '0', STR_PAD_LEFT);
 
-        // Generar número de postulación único (formato: YYYYMMDD-XXXX)
-        $numero_postulacion = date('Ymd') . '-' . str_pad(rand(1, 9999), 4, '0', STR_PAD_LEFT);
+        // Llamar procedure sp_crear_postulacion
+        $stmt = $conn->prepare("CALL sp_crear_postulacion(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, @codigo_out)");
 
-        // Iniciar transacción
-        $conn->beginTransaction();
-
-        // 1. Insertar postulación (estado = 5 = "Borrador")
-        $insert_post = $conn->prepare("
-            INSERT INTO postulacion (
-                numero_postulacion, fecha_postulacion, nombre_iniciativa,
-                objetivo, descripcion_soluciones, resultados_esperados,
-                presupuesto, rut_empresa, id_sede, id_reg_ejec, id_reg_impc,
-                id_tipo_iniciativa, id_estado_postulacion
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-        ");
-
-        $insert_post->execute([
+        $stmt->execute([
             $numero_postulacion,
-            date('Y-m-d'),  // fecha_postulacion = hoy
             $nombre_iniciativa,
             $objetivo,
             $descripcion_soluciones,
@@ -99,36 +83,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $id_reg_ejec,
             $id_reg_impc,
             $id_tipo_iniciativa,
-            5  // id_estado = 5 (Borrador)
+            $_SESSION['user']  // RUT del postulante logueado como responsable
         ]);
 
-        // Obtener el ID de la postulación recién creada
-        $codigo_interno = $conn->lastInsertId();
+        // Consumir resultados del procedure para limpiar el buffer
+        while ($stmt->nextRowset()) {
+            $stmt->fetchAll();
+        }
 
-        // 2. Insertar en equipo_trabajo (usuario como responsable)
-        $insert_equipo = $conn->prepare("
-            INSERT INTO equipo_trabajo (codigo_interno, rut, rol, es_responsable)
-            VALUES (?, ?, ?, ?)
-        ");
+        // Obtener el código generado
+        $result = $conn->query("SELECT @codigo_out as codigo")->fetch(PDO::FETCH_ASSOC);
+        $codigo_interno = $result['codigo'];
 
-        $insert_equipo->execute([
-            $codigo_interno,
-            $_SESSION['user'],  // RUT del postulante logueado
-            'Responsable',
-            1  // es_responsable = 1
-        ]);
-
-        // Confirmar transacción
-        $conn->commit();
-
-        // Éxito
-        $_SESSION['success'] = "Postulación creada correctamente. N°: $numero_postulacion";
-        header("Location: ../html/postulante.html");
-        exit();
+        if ($codigo_interno > 0) {
+            // Éxito
+            $_SESSION['success'] = "Postulación creada correctamente. N°: $numero_postulacion";
+            header("Location: ../html/postulante.html");
+            exit();
+        } else {
+            throw new Exception("Error al generar código de postulación: " . ($codigo_interno ?? 'NULL'));
+        }
 
     } catch (Exception $e) {
-        // Revertir transacción en caso de error
-        $conn->rollBack();
         $_SESSION['error'] = "Error al crear postulación: " . $e->getMessage();
         header("Location: ../html/registrar_postulacion.html");
         exit();

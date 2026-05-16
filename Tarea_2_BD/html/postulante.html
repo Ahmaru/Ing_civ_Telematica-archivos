@@ -21,6 +21,12 @@
         .alert-success { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
         .alert-error { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
         .close-alert { float: right; cursor: pointer; }
+        .info-box { background-color: #e3f2fd; padding: 15px; border-radius: 4px; margin: 20px 0; border-left: 4px solid #2196F3; }
+        .estado-badge { display: inline-block; padding: 4px 8px; border-radius: 4px; color: white; font-weight: bold; font-size: 12px; }
+        .estado-borrador { background-color: #9C27B0; }
+        .estado-revision { background-color: #FF9800; }
+        .estado-aprobada { background-color: #4CAF50; }
+        .estado-rechazada { background-color: #f44336; }
     </style>
 </head>
 <body>
@@ -36,6 +42,14 @@
 
     <div style="margin: 20px 0;">
         <a href="registrar_postulacion.html" class="btn btn-secondary">+ Crear Nueva Postulación</a>
+    </div>
+
+    <div class="info-box">
+        <h3 style="margin-top: 0;">Estados de Postulación</h3>
+        <p><span class="estado-badge estado-borrador">Borrador</span> - Puedes editar y enviar tu postulación. Una vez enviada, pasa a revisión.</p>
+        <p><span class="estado-badge estado-revision">En revisión</span> - Tu postulación está siendo evaluada. No puedes hacer cambios en este estado.</p>
+        <p><span class="estado-badge estado-aprobada">Aprobada</span> - ¡Felicidades! Tu postulación ha sido aprobada.</p>
+        <p><span class="estado-badge estado-rechazada">Rechazada</span> - Tu postulación fue rechazada. Puedes crear una nueva si lo deseas.</p>
     </div>
 
     <table id="postulacionesTable">
@@ -106,7 +120,7 @@
                     const row = `<tr>
                         <td>${post.numero_postulacion}</td>
                         <td>${post.nombre_iniciativa}</td>
-                        <td>${post.empresa}</td>
+                        <td>${post.nombre_empresa}</td>
                         <td>$${parseFloat(post.presupuesto).toLocaleString('es-CL')}</td>
                         <td>${post.estado}</td>
                         <td>${post.fecha_postulacion}</td>

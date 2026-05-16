@@ -22,22 +22,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     }
 
     // Verificar que es dueño y está en Borrador
-    $query = $conn->prepare("
-        SELECT p.*
-        FROM postulacion p
-        JOIN equipo_trabajo et ON p.codigo_interno = et.codigo_interno
-        WHERE p.codigo_interno = ?
-        AND et.rut = ?
-        AND et.es_responsable = 1
-        AND p.id_estado_postulacion = 5
-    ");
+    $check = $conn->prepare("SELECT fn_puede_editar_postulacion(?, ?) as puede");
+    $check->execute([$codigo, $_SESSION['user']]);
+    $resultado = $check->fetch(PDO::FETCH_ASSOC);
 
-    $query->execute([$codigo, $_SESSION['user']]);
+    if (!$resultado || !$resultado['puede']) {
+        http_response_code(403);
+        echo json_encode(['error' => 'No puedes editar esta postulación']);
+        exit();
+    }
+
+    // Obtener datos de la postulación
+    $query = $conn->prepare("SELECT * FROM postulacion WHERE codigo_interno = ?");
+    $query->execute([$codigo]);
     $postulacion = $query->fetch(PDO::FETCH_ASSOC);
 
     if (!$postulacion) {
-        http_response_code(403);
-        echo json_encode(['error' => 'No puedes editar esta postulación']);
+        http_response_code(404);
+        echo json_encode(['error' => 'Postulación no encontrada']);
         exit();
     }
 
@@ -65,17 +67,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     }
 
     // Verificar que es dueño y está en Borrador
-    $check = $conn->prepare("
-        SELECT codigo_interno FROM postulacion p
-        JOIN equipo_trabajo et ON p.codigo_interno = et.codigo_interno
-        WHERE p.codigo_interno = ?
-        AND et.rut = ?
-        AND et.es_responsable = 1
-        AND p.id_estado_postulacion = 5
-    ");
-
+    $check = $conn->prepare("SELECT fn_puede_editar_postulacion(?, ?) as puede");
     $check->execute([$codigo, $_SESSION['user']]);
-    if (!$check->fetch()) {
+    $resultado = $check->fetch(PDO::FETCH_ASSOC);
+
+    if (!$resultado || !$resultado['puede']) {
         http_response_code(403);
         echo json_encode(['success' => false, 'message' => 'No puedes editar esta postulación']);
         exit();

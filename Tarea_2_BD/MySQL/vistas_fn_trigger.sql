@@ -1,17 +1,23 @@
--- ola aqui para crear la view.
-/*
+-- ==================== VISTAS ====================
+
 CREATE OR REPLACE VIEW postulaciones_vista_academic AS
 SELECT
-    p.numero_postulacion AS 'N Postulacion',
-    empresa.nombre AS 'Nombre empresa',
-    a.descripcion AS 'Region ejecucion',
-    b.descripcion AS 'Region impacto',
-    sede.descripcion AS 'Sede',
-    ti.descripcion AS 'Iniciativa',
-    p.presupuesto AS 'Presupuesto',
-    es.descripcion AS 'Estado',
-    et.rol AS 'Rol',
-    et.rut AS 'Responsable'
+    p.codigo_interno,
+    p.numero_postulacion,
+    empresa.nombre AS nombre_empresa,
+    a.descripcion AS region_ejecucion,
+    b.descripcion AS region_impacto,
+    sede.descripcion AS sede,
+    ti.descripcion AS tipo_iniciativa,
+    p.presupuesto,
+    p.fecha_postulacion,
+    p.nombre_iniciativa,
+    p.objetivo,
+    p.descripcion_soluciones,
+    p.resultados_esperados,
+    es.descripcion AS estado,
+    et.rol,
+    et.rut AS responsable
 FROM (((((((postulacion AS p
     INNER JOIN empresa ON empresa.rut_empresa = p.rut_empresa)
     INNER JOIN regiones AS a ON a.id_regiones = p.id_reg_ejec)
@@ -19,11 +25,8 @@ FROM (((((((postulacion AS p
     INNER JOIN sede ON sede.id_sede = p.id_sede)
     INNER JOIN tipo_iniciativa ti ON ti.id_tipo_in = p.id_tipo_iniciativa)
     INNER JOIN estado_postulacion es ON es.id_estado = p.id_estado_postulacion)
-    INNER JOIN equipo_trabajo et ON (et.codigo_interno = p.codigo_interno AND et.es_responsable = 1))
-;
+    INNER JOIN equipo_trabajo et ON (et.codigo_interno = p.codigo_interno AND et.es_responsable = 1));
 
-
--- Segunda view pa lo que no es academic UwU
 CREATE OR REPLACE VIEW v_postulaciones_evaluador AS
 SELECT p.numero_postulacion AS 'N_postulacion',
        p.nombre_iniciativa AS 'Iniciativa',
@@ -32,17 +35,7 @@ SELECT p.numero_postulacion AS 'N_postulacion',
 FROM postulacion p
 JOIN estado_postulacion ep ON p.id_estado_postulacion = ep.id_estado
 JOIN tipo_iniciativa ti ON p.id_tipo_iniciativa = ti.id_tipo_in
-WHERE p.id_estado_postulacion = 1; -- "En revisión"
-
--- SQL FUNCTION - Contar postulaciones por integrante
-CREATE OR REPLACE FUNCTION fn_cant_postxint(param VARCHAR(20))
-RETURNS INT DETERMINISTIC
-BEGIN
-    DECLARE total INT;
-    SELECT COUNT(*) INTO total FROM equipo_trabajo WHERE rut = param;
-    RETURN total;
-END$$
-*/
+WHERE p.id_estado_postulacion = 1;
 
 -- ==================== TABLA DE AUDITORÍA ====================
 CREATE TABLE IF NOT EXISTS auditoria_postulacion (
