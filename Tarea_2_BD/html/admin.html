@@ -71,10 +71,10 @@
 
     <!-- TABS -->
     <div class="tabs">
-        <button class="tab-btn active" onclick="mostrarTab('evaluadores')">Evaluadores</button>
-        <button class="tab-btn" onclick="mostrarTab('postulaciones')">Postulaciones</button>
-        <button class="tab-btn" onclick="mostrarTab('asignaciones')">Asignar Evaluador</button>
-        <button class="tab-btn" onclick="mostrarTab('auditoria')">Auditoría</button>
+        <button class="tab-btn active" onclick="mostrarTab('evaluadores', this)">Evaluadores</button>
+        <button class="tab-btn" onclick="mostrarTab('postulaciones', this)">Postulaciones</button>
+        <button class="tab-btn" onclick="mostrarTab('asignaciones', this)">Asignar Evaluador</button>
+        <button class="tab-btn" onclick="mostrarTab('auditoria', this)">Auditoría</button>
     </div>
 
     <!-- TAB 1: EVALUADORES -->
@@ -86,8 +86,8 @@
                     <th>RUT</th>
                     <th>Nombre</th>
                     <th>Email</th>
-                    <th>Postulaciones Asignadas</th>
-                    <th>Acciones</th>
+                    <th>Departamento</th>
+                    <th>Post. Asignadas</th>
                 </tr>
             </thead>
             <tbody id="tbody-evaluadores">
@@ -178,6 +178,18 @@
         </table>
     </div>
 
+    <!-- MODAL COMENTARIOS -->
+    <div id="modalComentarios" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000; justify-content:center; align-items:center;">
+        <div style="background:white; border-radius:8px; padding:25px; max-width:600px; width:90%; max-height:80vh; overflow-y:auto; margin: 10vh auto;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; border-bottom:2px solid #eee; padding-bottom:10px;">
+                <h3 id="modalTitulo" style="margin:0; color:#003366;">Comentarios</h3>
+                <button onclick="cerrarModal()" style="background:none; border:none; font-size:24px; cursor:pointer; color:#999;">&times;</button>
+            </div>
+            <div id="modalBody" style="min-height:100px;">
+                <p style="text-align:center; color:#999;">Cargando...</p>
+            </div>
+        </div>
+    </div>
     <script>
         // Cargar nombre del usuario
         fetch('../php/obtener_usuario.php')
@@ -189,15 +201,13 @@
             })
             .catch(error => console.error('Error:', error));
 
-        // Funciones de navegación de tabs
-        function mostrarTab(tabName) {
+        function mostrarTab(tabName, btn) {
             document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
             document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
 
             document.getElementById(tabName).classList.add('active');
-            document.querySelector(`.tab-btn[onclick*="'${tabName}'"]`).classList.add('active');
+            btn.classList.add('active');
 
-            // Cargar datos si es necesario
             if(tabName === 'evaluadores') cargarEvaluadores();
             if(tabName === 'postulaciones') cargarPostulaciones();
             if(tabName === 'asignaciones') cargarAsignaciones();
@@ -242,10 +252,10 @@
                     data.forEach(ev => {
                         const row = `<tr>
                             <td>${ev.rut}</td>
-                            <td>${ev.nombre}</td>
+                            <td><a href="#" onclick="event.preventDefault(); verComentarios('${ev.rut}','${ev.nombre}')" style="color: #008CBA; font-weight: bold;">${ev.nombre}</a></td>
                             <td>${ev.mail}</td>
+                            <td>${ev.dpto}</td>
                             <td>${ev.postulaciones_asignadas}</td>
-                            <td><a href="#" class="btn" style="padding: 5px 10px; font-size: 12px;">Ver</a></td>
                         </tr>`;
                         tbody.innerHTML += row;
                     });
@@ -418,7 +428,49 @@
                 });
         }
 
-        // Cargar estadísticas y evaluadores al iniciar
+        function verComentarios(rut, nombre) {
+            document.getElementById('modalTitulo').textContent = 'Comentarios de ' + nombre;
+            document.getElementById('modalBody').innerHTML = '<p style="text-align:center; color:#999;">Cargando...</p>';
+            document.getElementById('modalComentarios').style.display = 'flex';
+
+            fetch('../php/admin.php?action=comentarios_evaluador&rut=' + rut)
+                .then(response => response.json())
+                .then(data => {
+                    const body = document.getElementById('modalBody');
+                    if(data.error) {
+                        body.innerHTML = '<p style="color:red;">Error al cargar comentarios</p>';
+                        return;
+                    }
+                    if(data.length === 0) {
+                        body.innerHTML = '<p style="text-align:center; color:#666; font-size:16px;">Este evaluador no ha evaluado.</p>';
+                        return;
+                    }
+                    let html = '<table style="width:100%; border-collapse:collapse;"><thead><tr style="background:#f2f2f2;"><th style="padding:8px; text-align:left; border-bottom:1px solid #ddd;">Postulación</th><th style="padding:8px; text-align:left; border-bottom:1px solid #ddd;">Decisión</th><th style="padding:8px; text-align:left; border-bottom:1px solid #ddd;">Comentario</th><th style="padding:8px; text-align:left; border-bottom:1px solid #ddd;">Fecha</th></tr></thead><tbody>';
+                    data.forEach(c => {
+                        html += `<tr>
+                            <td style="padding:8px; border-bottom:1px solid #eee;">${c.nombre_iniciativa}</td>
+                            <td style="padding:8px; border-bottom:1px solid #eee;">${c.estado}</td>
+                            <td style="padding:8px; border-bottom:1px solid #eee;">${c.comentarios || 'Sin comentarios'}</td>
+                            <td style="padding:8px; border-bottom:1px solid #eee;">${c.fecha_evaluacion}</td>
+                        </tr>`;
+                    });
+                    html += '</tbody></table>';
+                    body.innerHTML = html;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('modalBody').innerHTML = '<p style="color:red;">Error de conexión</p>';
+                });
+        }
+
+        function cerrarModal() {
+            document.getElementById('modalComentarios').style.display = 'none';
+        }
+
+        document.getElementById('modalComentarios').addEventListener('click', function(e) {
+            if(e.target === this) cerrarModal();
+        });
+
         cargarEstadisticas();
         cargarEvaluadores();
     </script>

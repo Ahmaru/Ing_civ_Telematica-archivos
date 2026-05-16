@@ -53,15 +53,35 @@ try {
                 c.rut,
                 i.nombre,
                 i.mail,
+                i.dpto,
                 COUNT(e.id) as postulaciones_asignadas
             FROM credenciales c
             JOIN integrantes i ON c.rut = i.rut
             LEFT JOIN evaluacion e ON c.rut = e.rut_evaluador
             WHERE c.id_tipo = 2
-            GROUP BY c.rut, i.nombre, i.mail
+            GROUP BY c.rut, i.nombre, i.mail, i.dpto
             ORDER BY i.nombre
         ");
         $query->execute();
+        echo json_encode($query->fetchAll(PDO::FETCH_ASSOC));
+    }
+
+    // COMENTARIOS DE UN EVALUADOR
+    else if ($action === 'comentarios_evaluador') {
+        $rut = $_GET['rut'] ?? '';
+        if (!$rut) {
+            echo json_encode(['error' => 'RUT requerido']);
+            exit();
+        }
+        $query = $conn->prepare("
+            SELECT e.codigo_interno, p.nombre_iniciativa, e.comentarios, e.fecha_evaluacion, ep.descripcion as estado
+            FROM evaluacion e
+            JOIN postulacion p ON e.codigo_interno = p.codigo_interno
+            JOIN estado_postulacion ep ON e.estado_nuevo = ep.id_estado
+            WHERE e.rut_evaluador = ?
+            ORDER BY e.fecha_evaluacion DESC
+        ");
+        $query->execute([$rut]);
         echo json_encode($query->fetchAll(PDO::FETCH_ASSOC));
     }
 
