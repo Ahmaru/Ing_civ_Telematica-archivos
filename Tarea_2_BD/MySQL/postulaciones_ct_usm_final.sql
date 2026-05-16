@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 16-05-2026 a las 02:44:25
+-- Tiempo de generación: 16-05-2026 a las 14:45:10
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -250,7 +250,7 @@ CREATE TABLE IF NOT EXISTS `auditoria_postulacion` (
   KEY `estado_anterior` (`estado_anterior`),
   KEY `estado_nuevo` (`estado_nuevo`),
   KEY `rut_usuario` (`rut_usuario`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `auditoria_postulacion`
@@ -259,7 +259,13 @@ CREATE TABLE IF NOT EXISTS `auditoria_postulacion` (
 INSERT INTO `auditoria_postulacion` (`id_auditoria`, `codigo_interno`, `estado_anterior`, `estado_nuevo`, `fecha_cambio`, `rut_usuario`) VALUES
 (2, 17, NULL, 5, '2026-05-15 23:46:21', NULL),
 (3, 17, 5, 1, '2026-05-15 23:46:42', NULL),
-(4, 17, 1, 3, '2026-05-15 23:55:06', NULL);
+(4, 17, 1, 3, '2026-05-15 23:55:06', NULL),
+(5, 18, NULL, 5, '2026-05-16 03:33:19', NULL),
+(6, 18, 5, 1, '2026-05-16 03:33:30', NULL),
+(7, 10, 1, 2, '2026-05-16 03:34:53', NULL),
+(8, 19, NULL, 5, '2026-05-16 03:48:27', NULL),
+(9, 19, 5, 1, '2026-05-16 03:48:35', NULL),
+(10, 19, 1, 3, '2026-05-16 03:49:29', NULL);
 
 -- --------------------------------------------------------
 
@@ -302,28 +308,6 @@ INSERT INTO `credenciales` (`id_usr`, `rut`, `password`, `id_tipo`) VALUES
 (17, '33333333-2', '$2y$10$hJ0lEnat9jrkQcPXY4DWy.w/0OK/tTCBOJWGG/Wo7eZKwJD9bKSgO', 3),
 (18, '44444444-1', '$2y$10$aNgKw3AawRwBYRY57dOGCuLlz3QsU9.jZdpGHKZyfGlmfTwJUy3.G', 3),
 (19, '44444444-2', '$2y$10$EctXPX7t2uCWr9iAlJ7Mbe52T5zXumlvWZJBFZXaWHhjGXluCh4qi', 3);
-
-/*
-11111111-1, ola
-11111111-2, pass_mvera
-11111111-3, pass_apino
-11111111-4, pass_csoto
-11111111-5, pass_rnunez
-11111111-6, pass_plagos
-11111111-7, pass_sdiaz
-11111111-8, pass_iramos
-11111111-9, pass_fmunoz
-11111111-0, pass_dcruz
-22222222-1, pass_ctorres
-22222222-2, pass_dherrera
-22222222-3, pass_smendez
-22222222-4, pass_mflores
-22222222-5, pass_vossa
-33333333-1, pass_cbravo
-33333333-2, pass_rsepulveda
-44444444-1, pass_cmunoz
-44444444-2, pass_apena
-*/
 
 -- --------------------------------------------------------
 
@@ -461,7 +445,9 @@ INSERT INTO `equipo_trabajo` (`codigo_interno`, `rut`, `rol`, `es_responsable`) 
 (10, '33333333-2', 'Diseñador UX', 0),
 (10, '33333333-9', 'Analista de Datos', 0),
 (10, '44444444-2', 'Desarrollador Frontend', 0),
-(17, '44444444-2', 'Responsable', 1);
+(17, '44444444-2', 'Responsable', 1),
+(18, '44444444-2', 'Responsable', 1),
+(19, '44444444-2', 'Responsable', 1);
 
 -- --------------------------------------------------------
 
@@ -559,7 +545,7 @@ CREATE TABLE IF NOT EXISTS `evaluacion` (
   KEY `codigo_interno` (`codigo_interno`),
   KEY `rut_evaluador` (`rut_evaluador`),
   KEY `estado_nuevo` (`estado_nuevo`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `evaluacion`
@@ -568,7 +554,9 @@ CREATE TABLE IF NOT EXISTS `evaluacion` (
 INSERT INTO `evaluacion` (`id`, `codigo_interno`, `rut_evaluador`, `estado_nuevo`, `fecha_evaluacion`, `comentarios`) VALUES
 (1, 1, '11111111-2', 1, '2026-05-13 06:58:03', NULL),
 (2, 6, '11111111-3', 1, '2026-05-13 06:59:24', NULL),
-(3, 17, '11111111-2', 3, '2026-05-15 23:55:06', 'Malardium, borra la cuenta lwk sybau');
+(3, 17, '11111111-2', 3, '2026-05-15 23:55:06', 'Malardium, borra la cuenta lwk sybau'),
+(4, 10, '11111111-2', 2, '2026-05-16 03:34:53', 'Buena iniciativa, esperando resultados demostrables en el tiempo'),
+(5, 19, '11111111-2', 3, '2026-05-16 03:49:29', 'Malardium, pruebas');
 
 -- --------------------------------------------------------
 
@@ -661,7 +649,7 @@ CREATE TABLE IF NOT EXISTS `postulacion` (
   KEY `id_reg_impc` (`id_reg_impc`),
   KEY `id_tipo_inciativa` (`id_tipo_iniciativa`),
   KEY `id_estado_postulacion` (`id_estado_postulacion`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Volcado de datos para la tabla `postulacion`
@@ -677,8 +665,10 @@ INSERT INTO `postulacion` (`codigo_interno`, `numero_postulacion`, `fecha_postul
 (7, 'POST-007', '2026-03-14', 'Sistema Trazabilidad Agrícola', 'Registrar cadena productiva agrícola completa', 'Blockchain para trazabilidad de productos', 'Certificación para exportaciones obtenida', 31000000.00, '76123456-1', 2, 4, 9, 1, 2),
 (8, 'POST-008', '2026-03-17', 'App Salud Mental Universitaria', 'Apoyar bienestar emocional de estudiantes', 'App móvil con recursos psicológicos digitales', '1000 estudiantes atendidos en el año', 7600000.00, '76234567-2', 3, 5, 13, 2, 1),
 (9, 'POST-009', '2026-03-20', 'Dashboard Energía Renovable', 'Visualizar consumo energético en tiempo real', 'Panel de métricas para paneles solares', 'Ahorro del 35% en consumo energético', 19400000.00, '76345678-3', 4, 3, 8, 1, 4),
-(10, 'POST-010', '2026-03-22', 'Sistema Inventario Inteligente', 'Automatizar control de stock en bodegas', 'RFID integrado con sistema ERP existente', 'Reducir pérdidas de inventario en 50%', 13700000.00, '76456789-4', 5, 13, 3, 2, 1),
-(17, 'POST-011', '2026-05-15', 'appsita', 'objetivo', 'solutions UwUr', 'results lwk', 123123123.00, '76345678-3', 2, 13, 14, 2, 3);
+(10, 'POST-010', '2026-03-22', 'Sistema Inventario Inteligente', 'Automatizar control de stock en bodegas', 'RFID integrado con sistema ERP existente', 'Reducir pérdidas de inventario en 50%', 13700000.00, '76456789-4', 5, 13, 3, 2, 2),
+(17, 'POST-011', '2026-05-15', 'appsita', 'objetivo', 'solutions UwUr', 'results lwk', 123123123.00, '76345678-3', 2, 13, 14, 2, 3),
+(18, 'POST-012', '2026-05-15', 'App optimizacion de comidas', 'optimizar las comidas diarias de manera eficiente', 'crear aplicacion', 'aplicacion de optimizacion util y modular', 120000000.00, '76543221-1', 3, 15, 3, 1, 1),
+(19, 'POST-013', '2026-05-15', 'aplicaicoon', 'probando', 'testear', 'pruebas y testing', 1200000.00, '76543221-1', 2, 10, 16, 2, 3);
 
 --
 -- Disparadores `postulacion`
@@ -912,7 +902,7 @@ CREATE TABLE IF NOT EXISTS `v_postulaciones_evaluador` (
 DROP TABLE IF EXISTS `postulaciones_vista_academic`;
 
 DROP VIEW IF EXISTS `postulaciones_vista_academic`;
-CREATE OR REPLACE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `postulaciones_vista_academic`  AS SELECT `p`.`codigo_interno` AS `codigo_interno`, `p`.`numero_postulacion` AS `numero_postulacion`, `empresa`.`nombre` AS `nombre_empresa`, `a`.`descripcion` AS `region_ejecucion`, `b`.`descripcion` AS `region_impacto`, `sede`.`descripcion` AS `sede`, `ti`.`descripcion` AS `tipo_iniciativa`, `p`.`presupuesto` AS `presupuesto`, `p`.`fecha_postulacion` AS `fecha_postulacion`, `p`.`nombre_iniciativa` AS `nombre_iniciativa`, `p`.`objetivo` AS `objetivo`, `p`.`descripcion_soluciones` AS `descripcion_soluciones`, `p`.`resultados_esperados` AS `resultados_esperados`, `es`.`descripcion` AS `estado`, `et`.`rol` AS `rol`, `et`.`rut` AS `responsable` FROM (((((((`postulacion` `p` join `empresa` on(`empresa`.`rut_empresa` = `p`.`rut_empresa`)) join `regiones` `a` on(`a`.`id_regiones` = `p`.`id_reg_ejec`)) join `regiones` `b` on(`b`.`id_regiones` = `p`.`id_reg_impc`)) join `sede` on(`sede`.`id_sede` = `p`.`id_sede`)) join `tipo_iniciativa` `ti` on(`ti`.`id_tipo_in` = `p`.`id_tipo_iniciativa`)) join `estado_postulacion` `es` on(`es`.`id_estado` = `p`.`id_estado_postulacion`)) join `equipo_trabajo` `et` on(`et`.`codigo_interno` = `p`.`codigo_interno` and `et`.`es_responsable` = 1)) ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `postulaciones_vista_academic`  AS SELECT `p`.`codigo_interno` AS `codigo_interno`, `p`.`numero_postulacion` AS `numero_postulacion`, `empresa`.`nombre` AS `nombre_empresa`, `a`.`descripcion` AS `region_ejecucion`, `b`.`descripcion` AS `region_impacto`, `sede`.`descripcion` AS `sede`, `ti`.`descripcion` AS `tipo_iniciativa`, `p`.`presupuesto` AS `presupuesto`, `p`.`fecha_postulacion` AS `fecha_postulacion`, `p`.`nombre_iniciativa` AS `nombre_iniciativa`, `p`.`objetivo` AS `objetivo`, `p`.`descripcion_soluciones` AS `descripcion_soluciones`, `p`.`resultados_esperados` AS `resultados_esperados`, `es`.`descripcion` AS `estado`, `et`.`rol` AS `rol`, `et`.`rut` AS `responsable` FROM (((((((`postulacion` `p` join `empresa` on(`empresa`.`rut_empresa` = `p`.`rut_empresa`)) join `regiones` `a` on(`a`.`id_regiones` = `p`.`id_reg_ejec`)) join `regiones` `b` on(`b`.`id_regiones` = `p`.`id_reg_impc`)) join `sede` on(`sede`.`id_sede` = `p`.`id_sede`)) join `tipo_iniciativa` `ti` on(`ti`.`id_tipo_in` = `p`.`id_tipo_iniciativa`)) join `estado_postulacion` `es` on(`es`.`id_estado` = `p`.`id_estado_postulacion`)) join `equipo_trabajo` `et` on(`et`.`codigo_interno` = `p`.`codigo_interno` and `et`.`es_responsable` = 1)) ;
 
 -- --------------------------------------------------------
 
@@ -922,7 +912,7 @@ CREATE OR REPLACE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DE
 DROP TABLE IF EXISTS `v_postulaciones_evaluador`;
 
 DROP VIEW IF EXISTS `v_postulaciones_evaluador`;
-CREATE OR REPLACE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_postulaciones_evaluador`  AS SELECT `p`.`numero_postulacion` AS `N_postulacion`, `p`.`nombre_iniciativa` AS `Iniciativa`, `ep`.`descripcion` AS `Estado`, `ti`.`descripcion` AS `Tipo_iniciativa` FROM ((`postulacion` `p` join `estado_postulacion` `ep` on(`p`.`id_estado_postulacion` = `ep`.`id_estado`)) join `tipo_iniciativa` `ti` on(`p`.`id_tipo_iniciativa` = `ti`.`id_tipo_in`)) WHERE `p`.`id_estado_postulacion` = 1 ;
+CREATE ALGORITHM=UNDEFINED DEFINER=`root`@`localhost` SQL SECURITY DEFINER VIEW `v_postulaciones_evaluador`  AS SELECT `p`.`numero_postulacion` AS `N_postulacion`, `p`.`nombre_iniciativa` AS `Iniciativa`, `ep`.`descripcion` AS `Estado`, `ti`.`descripcion` AS `Tipo_iniciativa` FROM ((`postulacion` `p` join `estado_postulacion` `ep` on(`p`.`id_estado_postulacion` = `ep`.`id_estado`)) join `tipo_iniciativa` `ti` on(`p`.`id_tipo_iniciativa` = `ti`.`id_tipo_in`)) WHERE `p`.`id_estado_postulacion` = 1 ;
 
 --
 -- Restricciones para tablas volcadas
