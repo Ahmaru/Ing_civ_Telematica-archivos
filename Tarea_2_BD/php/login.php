@@ -19,11 +19,12 @@ if ($key){
         header("Location: frontpage.php");
         exit();
     } else {
-        echo "Credenciales incorrectas, intente nuevamente.";
-        exit(1);
+        header("Location: ../html/login.html?error=1");
+        exit();
     }
 } else {
-    echo "Usuario no encontrado. Intente nuevamente o registre un nuevo usuario. ";
+    header("Location: ../html/login.html?error=1");
+    exit();
 }
 
 ?>

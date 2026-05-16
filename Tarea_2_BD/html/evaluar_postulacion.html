@@ -61,7 +61,7 @@
         </div>
     </div>
 
-    <form action="../php/evaluacion.php" method="POST">
+    <form id="evalForm">
         <input type="hidden" id="codigoInterno" name="codigo_interno" value="">
 
         <div class="form-group">
@@ -75,7 +75,7 @@
 
         <div class="form-group">
             <label>Comentarios / Retroalimentación <span class="required">*</span></label>
-            <textarea name="comentarios" required placeholder="Ingresa tus comentarios sobre la evaluación..."></textarea>
+            <textarea name="comentarios" id="comentarios" required placeholder="Ingresa tus comentarios sobre la evaluación..."></textarea>
         </div>
 
         <div style="margin-top: 30px;">
@@ -85,7 +85,6 @@
     </form>
 
     <script>
-        // Obtener código de la URL
         const urlParams = new URLSearchParams(window.location.search);
         const codigo = urlParams.get('codigo');
 
@@ -94,7 +93,6 @@
         } else {
             document.getElementById('codigoInterno').value = codigo;
 
-            // Cargar datos de la postulación
             fetch('../php/obtener_postulacion.php?codigo=' + codigo)
                 .then(response => response.json())
                 .then(data => {
@@ -116,6 +114,42 @@
                     alert('Error al cargar la postulación');
                 });
         }
+
+        document.getElementById('evalForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const formData = new URLSearchParams();
+            formData.append('codigo_interno', document.getElementById('codigoInterno').value);
+            formData.append('estado_nuevo', document.getElementById('estadoNuevo').value);
+            formData.append('comentarios', document.getElementById('comentarios').value);
+
+            const btn = this.querySelector('button[type="submit"]');
+            btn.disabled = true;
+            btn.textContent = 'Enviando...';
+
+            fetch('../php/evaluacion.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: formData
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if(data.success) {
+                        alert('Evaluación registrada correctamente');
+                        window.location.href = 'evaluador.html';
+                    } else {
+                        alert('Error: ' + (data.message || 'Error desconocido'));
+                        btn.disabled = false;
+                        btn.textContent = 'Enviar Evaluación';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Error de conexión al enviar evaluación');
+                    btn.disabled = false;
+                    btn.textContent = 'Enviar Evaluación';
+                });
+        });
     </script>
 </body>
 </html>
