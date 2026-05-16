@@ -2,6 +2,8 @@
 session_start();
 require_once 'connect_DB.php';
 
+//Archivo para la peticion de auditoria.
+
 header('Content-Type: application/json');
 
 // Protección: solo administradores

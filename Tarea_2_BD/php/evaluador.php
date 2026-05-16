@@ -2,6 +2,8 @@
 session_start();
 require_once 'connect_DB.php';
 
+//archivo para la logica que muestra las postulaciones que estan asignadas al evaluador.
+
 header('Content-Type: application/json');
 
 // Protección: solo evaluadores

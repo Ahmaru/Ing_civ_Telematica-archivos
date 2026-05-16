@@ -2,6 +2,8 @@
 session_start();
 require_once 'connect_DB.php';
 
+//archivo para registrar nuevas postulaciones usando logica mas compleja TT
+
 // Protección: solo postulantes pueden crear
 if (!isset($_SESSION['user']) || $_SESSION['rol'] != 3) {
     http_response_code(403);

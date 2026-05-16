@@ -2,6 +2,8 @@
 session_start();
 header('Content-Type: application/json');
 
+//archivo de obtencion de mensaje para modularizar su obtencion y replicancia.
+
 $mensaje = ['type' => null, 'text' => null];
 
 if (isset($_SESSION['success'])) {

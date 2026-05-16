@@ -2,6 +2,8 @@
 session_start();
 require_once 'connect_DB.php';
 
+//archivo con la logica basica de un login con chequeo de rol y credenciales.
+
 $usr = trim($_POST['usrname'] ?? ''); //este es el rut
 $psswrd = $_POST['psswrd'] ?? ''; //esta es la contra
 

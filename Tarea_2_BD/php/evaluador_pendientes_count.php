@@ -2,6 +2,8 @@
 session_start();
 require_once 'connect_DB.php';
 
+//archivo con la logica para el conteo de cuantas postulaciones quedan por evaluar por evaluador.
+
 header('Content-Type: application/json');
 
 // Protección: solo evaluadores

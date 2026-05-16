@@ -2,6 +2,8 @@
 session_start();
 require_once 'connect_DB.php';
 
+//archivo con la logica para obtener los datos de postulaciones.
+
 header('Content-Type: application/json');
 
 // Protección: usuario debe estar logueado

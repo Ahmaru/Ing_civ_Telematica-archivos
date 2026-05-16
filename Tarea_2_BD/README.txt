@@ -3,6 +3,9 @@ Ahmaru Huidobro 202330540-5
 Jorge Padilla 202330547-3
 
 Instrucciones de ejecución:
-Nosotros ejecutamos los scripts.sql desde terminal linux en MariaDB.
-Para usar los scripts en terminal MariaDB hay que descargar mariadb y sus dependencias, luego ingresamos con el comando "mysql -u root -p" y ponemos dentro de la consola de MariaDB el comando "source /ruta_a_los_archivos".
-La idea es empezar con el script "creacion_BD.sql" para crear y usar la base de datos deseada, luego usamos el script "insertar_BD.sql" para tener los datos correctos, ahi estaria lista para usar y probar la base de datos.
+Usamos XAMPP para la prueba de los archivos, para la base de datos dejamos datos precargados y se pueden agregar datos en la 
+vista web. 
+Para poder ejecutar correctamente en windows se hace con XAMPP, luego dentro de algun navegador de preferencia ingresamos a http://localhost/phpmyadmin para ingresar el .sql de datos precargados
+luego podemos ir al codigo de .php y .html, para las interacciones, en casos generales, hay que dejar la carpeta del proyecto en donde se instala el XAMPP dentro de una carpeta llamada
+htdocs. ahi comienza la logica de la ejecucion del codigo por completo.
+Para linux es parecida la idea solo cambia como se maneja XAMPP y donde se guarda el proyecto.

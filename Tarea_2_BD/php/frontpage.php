@@ -2,6 +2,8 @@
 session_start();
 require_once 'connect_DB.php';
 
+//archivo que separa la logica de admin, evaluador, postulante para mayor modularidad.
+
 if (!isset($_SESSION['user'])){
     header("Location: ../html/login.html");
     exit();

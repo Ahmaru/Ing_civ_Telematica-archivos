@@ -2,6 +2,8 @@
 session_start();
 require_once 'connect_DB.php';
 
+//archivo de actualizar estado de postulacion de borrador a en revision
+
 header('Content-Type: application/json');
 
 // Protección: solo postulantes

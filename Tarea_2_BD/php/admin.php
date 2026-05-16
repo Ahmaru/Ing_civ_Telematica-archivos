@@ -2,6 +2,8 @@
 session_start();
 require_once 'connect_DB.php';
 
+//Archivo con la logica para el rol admin
+
 header('Content-Type: application/json');
 
 // Protección: solo administradores

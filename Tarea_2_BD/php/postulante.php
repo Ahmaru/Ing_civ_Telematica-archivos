@@ -2,6 +2,8 @@
 session_start();
 require_once 'connect_DB.php';
 
+//archivo con la logica para obtener las postulaciones donde el user sea el responsable usando la vista.
+
 header('Content-Type: application/json');
 
 // Protección: solo postulantes

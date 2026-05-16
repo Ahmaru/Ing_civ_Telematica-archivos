@@ -2,6 +2,8 @@
 session_start();
 require_once 'connect_DB.php';
 
+//archivo para obtener credenciales del usuario logeado para modularizacion
+
 header('Content-Type: application/json');
 
 if (!isset($_SESSION['user'])) {

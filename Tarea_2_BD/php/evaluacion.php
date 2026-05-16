@@ -2,6 +2,8 @@
 session_start();
 require_once 'connect_DB.php';
 
+//archivo para logica de asignar una evaluacion y guardar en tabla evaluacion
+
 header('Content-Type: application/json');
 
 // Protección: solo evaluadores
