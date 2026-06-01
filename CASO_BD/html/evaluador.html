@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Evaluador - CT USM</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #ccc; padding: 10px 0; }
+        .search-box { margin: 20px 0; }
+        .search-box input { padding: 10px; width: 300px; border: 1px solid #ddd; border-radius: 4px; }
+        .search-box button { padding: 10px 20px; background-color: #008CBA; color: white; border: none; cursor: pointer; border-radius: 4px; }
+        .search-box button:hover { background-color: #007399; }
+        .btn { padding: 8px 16px; margin: 5px; background-color: #4CAF50; color: white; border: none; cursor: pointer; text-decoration: none; border-radius: 4px; display: inline-block; }
+        .btn:hover { background-color: #45a049; }
+        .btn-danger { background-color: #f44336; }
+        .btn-danger:hover { background-color: #da190b; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: #f2f2f2; }
+        tr:hover { background-color: #f5f5f5; }
+        .badge { padding: 4px 8px; border-radius: 4px; font-size: 12px; color: white; }
+        .badge-revision { background-color: #FF9800; }
+        .badge-aprobada { background-color: #4CAF50; }
+        .badge-rechazada { background-color: #f44336; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Panel Evaluador</h1>
+        <div>
+            <span>Bienvenido: <strong id="usuario">Cargando...</strong></span>
+            <span id="pendientesContainer" style="margin-left: 20px; display: none;">
+                Postulaciones pendientes: <span id="pendientesCount" class="badge" style="background-color: #FF9800; padding: 4px 8px; border-radius: 4px; color: white;">0</span>
+            </span>
+            <a href="../php/logout.php" class="btn btn-danger">Salir</a>
+        </div>
+    </div>
+
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Buscar por N° de postulación o iniciativa...">
+        <button onclick="buscar()">Buscar</button>
+    </div>
+
+    <table id="postulacionesTable">
+        <thead>
+            <tr>
+                <th>N° Postulación</th>
+                <th>Iniciativa</th>
+                <th>Empresa</th>
+                <th>Tipo</th>
+                <th>Estado</th>
+                <th>Fecha</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody id="tbody">
+            <tr>
+                <td colspan="7" style="text-align: center; padding: 20px;">Cargando postulaciones...</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+        // Cargar nombre del usuario y contador de pendientes
+        fetch('../php/obtener_usuario.php')
+            .then(response => response.json())
+            .then(data => {
+                if (data.nombre) {
+                    document.getElementById('usuario').textContent = data.nombre;
+                }
+            })
+            .catch(error => console.error('Error:', error));
+
+        // Cargar contador de postulaciones pendientes
+        function cargarPendientes() {
+            fetch('../php/evaluador_pendientes_count.php')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        console.error('Error:', data.error);
+                        return;
+                    }
+                    const total = data.total || 0;
+                    document.getElementById('pendientesCount').textContent = total;
+                    document.getElementById('pendientesContainer').style.display = total > 0 ? 'inline-block' : 'none';
+                })
+                .catch(error => console.error('Error cargando pendientes:', error));
+        }
+
+        // Cargar postulaciones en revisión asignadas al evaluador
+        function cargarPostulaciones(busqueda = '') {
+            let url = '../php/evaluador.php';
+            if(busqueda) {
+                url += '?q=' + encodeURIComponent(busqueda);
+            }
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    const tbody = document.getElementById('tbody');
+                    tbody.innerHTML = '';
+
+                    if(data.error) {
+                        tbody.innerHTML = '<tr><td colspan="7" style="text-align: center; color: red;">Error: ' + data.error + '</td></tr>';
+                        return;
+                    }
+
+                    if(data.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="7" style="text-align: center;">No hay postulaciones asignadas</td></tr>';
+                        return;
+                    }
+
+                    data.forEach(post => {
+                        let estadoBadge = 'badge-revision';
+                        if(post.estado === 'Aprobada') estadoBadge = 'badge-aprobada';
+                        if(post.estado === 'Rechazada') estadoBadge = 'badge-rechazada';
+
+                        const row = `<tr>
+                            <td>${post.numero_postulacion}</td>
+                            <td>${post.nombre_iniciativa}</td>
+                            <td>${post.empresa || 'N/A'}</td>
+                            <td>${post.tipo_iniciativa || 'N/A'}</td>
+                            <td><span class="badge ${estadoBadge}">${post.estado}</span></td>
+                            <td>${post.fecha_postulacion}</td>
+                            <td>
+                                <a href="ver_postulacion.html?codigo=${post.codigo_interno}" class="btn" style="padding: 5px 10px; font-size: 12px;">Ver</a>
+                                ${post.estado === 'En revisión' ? `
+                                    <a href="evaluar_postulacion.html?codigo=${post.codigo_interno}" class="btn" style="padding: 5px 10px; font-size: 12px; background-color: #FF9800;">Evaluar</a>
+                                ` : ''}
+                            </td>
+                        </tr>`;
+                        tbody.innerHTML += row;
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('tbody').innerHTML = '<tr><td colspan="7" style="text-align: center; color: red;">Error al cargar postulaciones</td></tr>';
+                });
+        }
+
+        function buscar() {
+            const q = document.getElementById('searchInput').value;
+            cargarPostulaciones(q);
+        }
+
+        // Cargar postulaciones al iniciar
+        cargarPostulaciones();
+        cargarPendientes();
+
+        // Permitir buscar con Enter
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if(e.key === 'Enter') buscar();
+        });
+    </script>
+</body>
+</html>

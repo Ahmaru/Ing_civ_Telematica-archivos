@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Admin - CT USM</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #ccc; padding: 10px 0; }
+        .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin: 20px 0; }
+        .stat-card { background-color: #f0f0f0; padding: 20px; border-radius: 4px; text-align: center; }
+        .stat-card h3 { margin: 0; color: #666; font-size: 14px; }
+        .stat-card .number { font-size: 32px; font-weight: bold; color: #008CBA; margin: 10px 0; }
+        .tabs { display: flex; gap: 10px; margin: 20px 0; border-bottom: 2px solid #ddd; }
+        .tab-btn { padding: 10px 20px; background: none; border: none; cursor: pointer; font-size: 16px; border-bottom: 3px solid transparent; }
+        .tab-btn.active { border-bottom-color: #008CBA; color: #008CBA; font-weight: bold; }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+        .btn { padding: 8px 16px; margin: 5px; background-color: #4CAF50; color: white; border: none; cursor: pointer; text-decoration: none; border-radius: 4px; display: inline-block; }
+        .btn:hover { background-color: #45a049; }
+        .btn-danger { background-color: #f44336; }
+        .btn-danger:hover { background-color: #da190b; }
+        .btn-assign { background-color: #FF9800; }
+        .btn-assign:hover { background-color: #e68900; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { padding: 10px; text-align: left; border-bottom: 1px solid #ddd; }
+        th { background-color: #f2f2f2; }
+        tr:hover { background-color: #f5f5f5; }
+        .badge { padding: 4px 8px; border-radius: 4px; font-size: 12px; color: white; }
+        .badge-revision { background-color: #FF9800; }
+        .badge-aprobada { background-color: #4CAF50; }
+        .badge-rechazada { background-color: #f44336; }
+        .badge-borrador { background-color: #9C27B0; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Panel Administrador</h1>
+        <div>
+            <span>Usuario: <strong id="usuario">Cargando...</strong></span>
+            <a href="../php/logout.php" class="btn btn-danger">Salir</a>
+        </div>
+    </div>
+
+    <!-- ESTADÍSTICAS -->
+    <div style="margin-top: 30px;">
+        <h2>Estadísticas</h2>
+        <div class="stats">
+            <div class="stat-card">
+                <h3>Total Postulaciones</h3>
+                <div class="number" id="totalPost">-</div>
+            </div>
+            <div class="stat-card">
+                <h3>En Revisión</h3>
+                <div class="number" id="enRevision">-</div>
+            </div>
+            <div class="stat-card">
+                <h3>Aprobadas</h3>
+                <div class="number" id="aprobadas">-</div>
+            </div>
+            <div class="stat-card">
+                <h3>Rechazadas</h3>
+                <div class="number" id="rechazadas">-</div>
+            </div>
+            <div class="stat-card">
+                <h3>Evaluadores</h3>
+                <div class="number" id="evaluadores">-</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs">
+        <button class="tab-btn active" onclick="mostrarTab('evaluadores', this)">Evaluadores</button>
+        <button class="tab-btn" onclick="mostrarTab('postulaciones', this)">Postulaciones</button>
+        <button class="tab-btn" onclick="mostrarTab('asignaciones', this)">Asignar Evaluador</button>
+        <button class="tab-btn" onclick="mostrarTab('auditoria', this)">Auditoría</button>
+    </div>
+
+    <!-- TAB 1: EVALUADORES -->
+    <div id="evaluadores" class="tab-content active">
+        <h2>Evaluadores Registrados</h2>
+        <table id="evaluadoresTable">
+            <thead>
+                <tr>
+                    <th>RUT</th>
+                    <th>Nombre</th>
+                    <th>Email</th>
+                    <th>Departamento</th>
+                    <th>Post. Asignadas</th>
+                </tr>
+            </thead>
+            <tbody id="tbody-evaluadores">
+                <tr>
+                    <td colspan="5" style="text-align: center; padding: 20px;">Cargando...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- TAB 2: POSTULACIONES -->
+    <div id="postulaciones" class="tab-content">
+        <h2>Todas las Postulaciones</h2>
+        <table id="postulacionesTable">
+            <thead>
+                <tr>
+                    <th>N° Postulación</th>
+                    <th>Iniciativa</th>
+                    <th>Empresa</th>
+                    <th>Presupuesto</th>
+                    <th>Estado</th>
+                    <th>Fecha</th>
+                </tr>
+            </thead>
+            <tbody id="tbody-postulaciones">
+                <tr>
+                    <td colspan="6" style="text-align: center; padding: 20px;">Cargando...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- TAB 3: ASIGNAR EVALUADOR -->
+    <div id="asignaciones" class="tab-content">
+        <h2>Asignar Evaluador a Postulación</h2>
+        <div style="background-color: #f9f9f9; padding: 20px; border-radius: 4px; margin-bottom: 20px;">
+            <div style="margin-bottom: 15px;">
+                <label style="font-weight: bold;">Postulación:</label>
+                <select id="selectPostulacion" style="width: 100%; padding: 8px;">
+                    <option value="">Cargando...</option>
+                </select>
+            </div>
+            <div style="margin-bottom: 15px;">
+                <label style="font-weight: bold;">Evaluador:</label>
+                <select id="selectEvaluador" style="width: 100%; padding: 8px;">
+                    <option value="">Cargando...</option>
+                </select>
+            </div>
+            <button class="btn btn-assign" onclick="asignarEvaluador()" style="width: 100%;">Asignar Evaluador</button>
+        </div>
+
+        <h3>Asignaciones Recientes</h3>
+        <table id="asignacionesTable">
+            <thead>
+                <tr>
+                    <th>Postulación</th>
+                    <th>Evaluador</th>
+                    <th>Fecha Asignación</th>
+                </tr>
+            </thead>
+            <tbody id="tbody-asignaciones">
+                <tr>
+                    <td colspan="3" style="text-align: center; padding: 20px;">Cargando...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- TAB 4: AUDITORÍA -->
+    <div id="auditoria" class="tab-content">
+        <h2>Historial de Cambios</h2>
+        <table id="auditoriaTable">
+            <thead>
+                <tr>
+                    <th>Postulación</th>
+                    <th>Iniciativa</th>
+                    <th>Estado Anterior</th>
+                    <th>Estado Nuevo</th>
+                    <th>Fecha Cambio</th>
+                    <th>Usuario</th>
+                </tr>
+            </thead>
+            <tbody id="tbody-auditoria">
+                <tr>
+                    <td colspan="6" style="text-align: center; padding: 20px;">Cargando...</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- MODAL COMENTARIOS -->
+    <div id="modalComentarios" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000; justify-content:center; align-items:center;">
+        <div style="background:white; border-radius:8px; padding:25px; max-width:600px; width:90%; max-height:80vh; overflow-y:auto; margin: 10vh auto;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; border-bottom:2px solid #eee; padding-bottom:10px;">
+                <h3 id="modalTitulo" style="margin:0; color:#003366;">Comentarios</h3>
+                <button onclick="cerrarModal()" style="background:none; border:none; font-size:24px; cursor:pointer; color:#999;">&times;</button>
+            </div>
+            <div id="modalBody" style="min-height:100px;">
+                <p style="text-align:center; color:#999;">Cargando...</p>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Cargar nombre del usuario
+        fetch('../php/obtener_usuario.php')
+            .then(response => response.json())
+            .then(data => {
+                if (data.nombre) {
+                    document.getElementById('usuario').textContent = data.nombre;
+                }
+            })
+            .catch(error => console.error('Error:', error));
+
+        function mostrarTab(tabName, btn) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+
+            document.getElementById(tabName).classList.add('active');
+            btn.classList.add('active');
+
+            if(tabName === 'evaluadores') cargarEvaluadores();
+            if(tabName === 'postulaciones') cargarPostulaciones();
+            if(tabName === 'asignaciones') cargarAsignaciones();
+            if(tabName === 'auditoria') cargarAuditoria();
+        }
+
+        // Cargar estadísticas
+        function cargarEstadisticas() {
+            fetch('../php/admin.php?action=stats')
+                .then(response => response.json())
+                .then(data => {
+                    if(data.error) {
+                        console.error('Error:', data.error);
+                        return;
+                    }
+                    document.getElementById('totalPost').textContent = data.total;
+                    document.getElementById('enRevision').textContent = data.en_revision;
+                    document.getElementById('aprobadas').textContent = data.aprobadas;
+                    document.getElementById('rechazadas').textContent = data.rechazadas;
+                    document.getElementById('evaluadores').textContent = data.evaluadores;
+                })
+                .catch(error => console.error('Error cargando estadísticas:', error));
+        }
+
+        function cargarEvaluadores() {
+            fetch('../php/admin.php?action=evaluadores')
+                .then(response => response.json())
+                .then(data => {
+                    if(data.error) {
+                        console.error('Error:', data.error);
+                        document.getElementById('tbody-evaluadores').innerHTML = '<tr><td colspan="5" style="text-align: center; color: red;">Error al cargar</td></tr>';
+                        return;
+                    }
+                    const tbody = document.getElementById('tbody-evaluadores');
+                    tbody.innerHTML = '';
+
+                    if(data.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center;">No hay evaluadores registrados</td></tr>';
+                        return;
+                    }
+
+                    data.forEach(ev => {
+                        const row = `<tr>
+                            <td>${ev.rut}</td>
+                            <td><a href="#" onclick="event.preventDefault(); verComentarios('${ev.rut}','${ev.nombre}')" style="color: #008CBA; font-weight: bold;">${ev.nombre}</a></td>
+                            <td>${ev.mail}</td>
+                            <td>${ev.dpto}</td>
+                            <td>${ev.postulaciones_asignadas}</td>
+                        </tr>`;
+                        tbody.innerHTML += row;
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('tbody-evaluadores').innerHTML = '<tr><td colspan="5" style="text-align: center; color: red;">Error al cargar</td></tr>';
+                });
+        }
+
+        function cargarPostulaciones() {
+            fetch('../php/admin.php?action=postulaciones')
+                .then(response => response.json())
+                .then(data => {
+                    if(data.error) {
+                        console.error('Error:', data.error);
+                        document.getElementById('tbody-postulaciones').innerHTML = '<tr><td colspan="6" style="text-align: center; color: red;">Error al cargar</td></tr>';
+                        return;
+                    }
+                    const tbody = document.getElementById('tbody-postulaciones');
+                    tbody.innerHTML = '';
+
+                    if(data.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No hay postulaciones</td></tr>';
+                        return;
+                    }
+
+                    data.forEach(post => {
+                        let badge = 'badge-revision';
+                        if(post.estado === 'Aprobada') badge = 'badge-aprobada';
+                        if(post.estado === 'Rechazada') badge = 'badge-rechazada';
+
+                        const row = `<tr>
+                            <td>${post.numero_postulacion}</td>
+                            <td>${post.nombre_iniciativa}</td>
+                            <td>${post.empresa}</td>
+                            <td>${post.presupuesto.toLocaleString('es-CL', {style: 'currency', currency: 'CLP'})}</td>
+                            <td><span class="badge ${badge}">${post.estado}</span></td>
+                            <td>${post.fecha_postulacion}</td>
+                        </tr>`;
+                        tbody.innerHTML += row;
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('tbody-postulaciones').innerHTML = '<tr><td colspan="6" style="text-align: center; color: red;">Error al cargar</td></tr>';
+                });
+        }
+
+        function cargarAsignaciones() {
+            // Cargar postulaciones sin evaluador
+            fetch('../php/admin.php?action=postulaciones_sin_evaluador')
+                .then(response => response.json())
+                .then(data => {
+                    if(data.error) {
+                        console.error('Error:', data.error);
+                        return;
+                    }
+                    const select = document.getElementById('selectPostulacion');
+                    select.innerHTML = '<option value="">Selecciona postulación...</option>';
+                    data.forEach(post => {
+                        select.innerHTML += `<option value="${post.codigo_interno}">${post.numero_postulacion} - ${post.nombre_iniciativa}</option>`;
+                    });
+                });
+
+            // Cargar evaluadores
+            fetch('../php/admin.php?action=evaluadores')
+                .then(response => response.json())
+                .then(data => {
+                    if(data.error) {
+                        console.error('Error:', data.error);
+                        return;
+                    }
+                    const select = document.getElementById('selectEvaluador');
+                    select.innerHTML = '<option value="">Selecciona evaluador...</option>';
+                    data.forEach(ev => {
+                        select.innerHTML += `<option value="${ev.rut}">${ev.nombre} (${ev.rut})</option>`;
+                    });
+                });
+
+            // Cargar asignaciones recientes
+            fetch('../php/admin.php?action=asignaciones')
+                .then(response => response.json())
+                .then(data => {
+                    if(data.error) {
+                        console.error('Error:', data.error);
+                        document.getElementById('tbody-asignaciones').innerHTML = '<tr><td colspan="3" style="text-align: center; color: red;">Error al cargar</td></tr>';
+                        return;
+                    }
+                    const tbody = document.getElementById('tbody-asignaciones');
+                    tbody.innerHTML = '';
+
+                    if(data.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="3" style="text-align: center;">No hay asignaciones</td></tr>';
+                        return;
+                    }
+
+                    data.forEach(asig => {
+                        const row = `<tr>
+                            <td>${asig.numero_postulacion}</td>
+                            <td>${asig.evaluador_nombre}</td>
+                            <td>${asig.fecha}</td>
+                        </tr>`;
+                        tbody.innerHTML += row;
+                    });
+                });
+        }
+
+        function asignarEvaluador() {
+            const codigo = document.getElementById('selectPostulacion').value;
+            const rut = document.getElementById('selectEvaluador').value;
+
+            if(!codigo || !rut) {
+                alert('Selecciona postulación y evaluador');
+                return;
+            }
+
+            fetch('../php/admin.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: 'action=asignar&codigo=' + codigo + '&rut=' + rut
+            })
+            .then(response => response.json())
+            .then(data => {
+                if(data.error) {
+                    alert('Error: ' + data.error);
+                    return;
+                }
+                if(data.success) {
+                    alert('Evaluador asignado correctamente');
+                    cargarAsignaciones();
+                } else {
+                    alert('Error: ' + data.message);
+                }
+            });
+        }
+
+        function cargarAuditoria() {
+            fetch('../php/admin_auditoria.php')
+                .then(response => response.json())
+                .then(data => {
+                    if(data.error) {
+                        console.error('Error:', data.error);
+                        document.getElementById('tbody-auditoria').innerHTML = '<tr><td colspan="6" style="text-align: center; color: red;">Error al cargar</td></tr>';
+                        return;
+                    }
+                    const tbody = document.getElementById('tbody-auditoria');
+                    tbody.innerHTML = '';
+
+                    if(data.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No hay cambios registrados</td></tr>';
+                        return;
+                    }
+
+                    data.forEach(audit => {
+                        const row = `<tr>
+                            <td>${audit.numero_postulacion}</td>
+                            <td>${audit.nombre_iniciativa}</td>
+                            <td>${audit.estado_anterior || 'Creada'}</td>
+                            <td>${audit.estado_nuevo}</td>
+                            <td>${audit.fecha_cambio}</td>
+                            <td>${audit.usuario}</td>
+                        </tr>`;
+                        tbody.innerHTML += row;
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('tbody-auditoria').innerHTML = '<tr><td colspan="6" style="text-align: center; color: red;">Error al cargar</td></tr>';
+                });
+        }
+
+        function verComentarios(rut, nombre) {
+            document.getElementById('modalTitulo').textContent = 'Comentarios de ' + nombre;
+            document.getElementById('modalBody').innerHTML = '<p style="text-align:center; color:#999;">Cargando...</p>';
+            document.getElementById('modalComentarios').style.display = 'flex';
+
+            fetch('../php/admin.php?action=comentarios_evaluador&rut=' + rut)
+                .then(response => response.json())
+                .then(data => {
+                    const body = document.getElementById('modalBody');
+                    if(data.error) {
+                        body.innerHTML = '<p style="color:red;">Error al cargar comentarios</p>';
+                        return;
+                    }
+                    if(data.length === 0) {
+                        body.innerHTML = '<p style="text-align:center; color:#666; font-size:16px;">Este evaluador no ha evaluado.</p>';
+                        return;
+                    }
+                    let html = '<table style="width:100%; border-collapse:collapse;"><thead><tr style="background:#f2f2f2;"><th style="padding:8px; text-align:left; border-bottom:1px solid #ddd;">Postulación</th><th style="padding:8px; text-align:left; border-bottom:1px solid #ddd;">Decisión</th><th style="padding:8px; text-align:left; border-bottom:1px solid #ddd;">Comentario</th><th style="padding:8px; text-align:left; border-bottom:1px solid #ddd;">Fecha</th></tr></thead><tbody>';
+                    data.forEach(c => {
+                        html += `<tr>
+                            <td style="padding:8px; border-bottom:1px solid #eee;">${c.nombre_iniciativa}</td>
+                            <td style="padding:8px; border-bottom:1px solid #eee;">${c.estado}</td>
+                            <td style="padding:8px; border-bottom:1px solid #eee;">${c.comentarios || 'Sin comentarios'}</td>
+                            <td style="padding:8px; border-bottom:1px solid #eee;">${c.fecha_evaluacion}</td>
+                        </tr>`;
+                    });
+                    html += '</tbody></table>';
+                    body.innerHTML = html;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('modalBody').innerHTML = '<p style="color:red;">Error de conexión</p>';
+                });
+        }
+
+        function cerrarModal() {
+            document.getElementById('modalComentarios').style.display = 'none';
+        }
+
+        document.getElementById('modalComentarios').addEventListener('click', function(e) {
+            if(e.target === this) cerrarModal();
+        });
+
+        cargarEstadisticas();
+        cargarEvaluadores();
+    </script>
+</body>
+</html>

@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles de Postulación - CT USM</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; max-width: 900px; margin-left: auto; margin-right: auto; }
+        .header { border-bottom: 2px solid #ccc; padding: 10px 0; margin-bottom: 20px; }
+        .back-link { color: #008CBA; text-decoration: none; font-weight: bold; }
+        .back-link:hover { text-decoration: underline; }
+        .info-box { background-color: #f9f9f9; padding: 20px; border-radius: 4px; margin-bottom: 20px; }
+        .info-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+        .info-field { }
+        .info-field strong { display: block; margin-bottom: 5px; color: #333; font-weight: bold; }
+        .info-field p { margin: 0; color: #666; }
+        .full-width { grid-column: 1 / -1; }
+        .badge { display: inline-block; padding: 6px 12px; border-radius: 4px; font-size: 14px; color: white; font-weight: bold; }
+        .badge-borrador { background-color: #9C27B0; }
+        .badge-revision { background-color: #FF9800; }
+        .badge-aprobada { background-color: #4CAF50; }
+        .badge-rechazada { background-color: #f44336; }
+        .btn { padding: 10px 20px; background-color: #4CAF50; color: white; border: none; cursor: pointer; border-radius: 4px; margin-right: 10px; }
+        .btn:hover { background-color: #45a049; }
+        .btn-secondary { background-color: #008CBA; }
+        .btn-secondary:hover { background-color: #007399; }
+        .btn-danger { background-color: #f44336; }
+        .btn-danger:hover { background-color: #da190b; }
+        .actions { margin-top: 30px; display: flex; gap: 10px; }
+        .loading { text-align: center; padding: 40px; color: #666; }
+        .error { color: red; padding: 20px; background-color: #ffe0e0; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <p><a href="javascript:history.back()" class="back-link">← Volver atrás</a></p>
+        <h1>Detalles de Postulación</h1>
+    </div>
+
+    <div id="content">
+        <div class="loading">Cargando postulación...</div>
+    </div>
+
+    <script>
+        const urlParams = new URLSearchParams(window.location.search);
+        const codigo = urlParams.get('codigo');
+
+        if (!codigo) {
+            document.getElementById('content').innerHTML = '<div class="error">Error: No se especificó postulación</div>';
+        } else {
+            fetch('../php/obtener_postulacion.php?codigo=' + codigo)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        document.getElementById('content').innerHTML = `<div class="error">Error: ${data.error}</div>`;
+                        return;
+                    }
+
+                    let estadoBadge = 'badge-revision';
+                    if (data.estado === 'Borrador') estadoBadge = 'badge-borrador';
+                    if (data.estado === 'Aprobada') estadoBadge = 'badge-aprobada';
+                    if (data.estado === 'Rechazada') estadoBadge = 'badge-rechazada';
+
+                    const html = `
+                        <div class="info-box">
+                            <div class="info-row">
+                                <div class="info-field">
+                                    <strong>N° Postulación</strong>
+                                    <p>${data.numero_postulacion}</p>
+                                </div>
+                                <div class="info-field">
+                                    <strong>Estado</strong>
+                                    <p><span class="badge ${estadoBadge}">${data.estado}</span></p>
+                                </div>
+                            </div>
+
+                            <div class="info-row">
+                                <div class="info-field">
+                                    <strong>Nombre Iniciativa</strong>
+                                    <p>${data.nombre_iniciativa}</p>
+                                </div>
+                                <div class="info-field">
+                                    <strong>Empresa</strong>
+                                    <p>${data.empresa}</p>
+                                </div>
+                            </div>
+
+                            <div class="info-row">
+                                <div class="info-field">
+                                    <strong>Tipo Iniciativa</strong>
+                                    <p>${data.tipo_iniciativa}</p>
+                                </div>
+                                <div class="info-field">
+                                    <strong>Presupuesto</strong>
+                                    <p>$${parseFloat(data.presupuesto).toLocaleString('es-CL')}</p>
+                                </div>
+                            </div>
+
+                            <div class="info-row">
+                                <div class="info-field">
+                                    <strong>Sede</strong>
+                                    <p>${data.sede}</p>
+                                </div>
+                                <div class="info-field">
+                                    <strong>Fecha Postulación</strong>
+                                    <p>${new Date(data.fecha_postulacion).toLocaleDateString('es-CL')}</p>
+                                </div>
+                            </div>
+
+                            <div class="info-row">
+                                <div class="info-field">
+                                    <strong>Región de Ejecución</strong>
+                                    <p>${data.region_ejecucion}</p>
+                                </div>
+                                <div class="info-field">
+                                    <strong>Región de Impacto</strong>
+                                    <p>${data.region_impacto}</p>
+                                </div>
+                            </div>
+
+                            <div class="info-field full-width">
+                                <strong>Objetivo</strong>
+                                <p>${data.objetivo}</p>
+                            </div>
+
+                            <div class="info-field full-width">
+                                <strong>Descripción de Soluciones</strong>
+                                <p>${data.descripcion_soluciones}</p>
+                            </div>
+
+                            <div class="info-field full-width">
+                                <strong>Resultados Esperados</strong>
+                                <p>${data.resultados_esperados}</p>
+                            </div>
+                        </div>
+
+                        <div class="actions">
+                            <button class="btn btn-secondary" onclick="history.back()">Volver</button>
+                            ${data.estado === 'Borrador' ? `
+                                <a href="editar_postulacion.html?codigo=${data.codigo_interno}" class="btn">Editar</a>
+                                <button class="btn" onclick="enviarPostulacion(${data.codigo_interno})">Enviar</button>
+                            ` : ''}
+                        </div>
+                    `;
+
+                    document.getElementById('content').innerHTML = html;
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('content').innerHTML = '<div class="error">Error al cargar la postulación</div>';
+                });
+        }
+
+        function enviarPostulacion(codigo) {
+            if (confirm('¿Estás seguro de que deseas enviar esta postulación? No podrás editarla después.')) {
+                fetch('../php/enviar_postulacion.php', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    body: 'codigo=' + codigo
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Postulación enviada correctamente');
+                        location.reload();
+                    } else {
+                        alert('Error: ' + data.message);
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+</html>

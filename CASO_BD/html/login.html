@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iniciar Sesión - CT USM</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #003366 0%, #005a9e 50%, #008CBA 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .login-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            padding: 40px;
+            width: 100%;
+            max-width: 400px;
+            margin: 20px;
+        }
+        .login-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .login-header h1 {
+            color: #003366;
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+        .login-header p {
+            color: #666;
+            font-size: 14px;
+        }
+        .login-header .logo {
+            width: 80px;
+            height: 80px;
+            background: #003366;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 12px 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 15px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            outline: none;
+        }
+        .form-group input:focus {
+            border-color: #008CBA;
+            box-shadow: 0 0 0 3px rgba(0,140,186,0.15);
+        }
+        .form-group input::placeholder {
+            color: #aaa;
+        }
+        .btn-login {
+            width: 100%;
+            padding: 12px;
+            background: #008CBA;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.3s, transform 0.1s;
+        }
+        .btn-login:hover {
+            background: #0077a3;
+        }
+        .btn-login:active {
+            transform: scale(0.98);
+        }
+        .footer-text {
+            text-align: center;
+            margin-top: 20px;
+            color: #999;
+            font-size: 12px;
+        }
+        .error-message {
+            background: #ffebee;
+            color: #c62828;
+            padding: 10px 14px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <div class="logo">CT</div>
+            <h1>Sistema de Postulaciones</h1>
+            <p>Centro de Transferencia CT-USM</p>
+        </div>
+
+        <form action="../php/login.php" method="POST">
+            <div class="form-group">
+                <label for="usrname">RUT Usuario</label>
+                <input type="text" id="usrname" name="usrname" required placeholder="12345678-9">
+            </div>
+            <div class="form-group">
+                <label for="psswrd">Contraseña</label>
+                <input type="password" id="psswrd" name="psswrd" required placeholder="Ingrese su contraseña">
+            </div>
+            <button type="submit" class="btn-login">Entrar</button>
+        </form>
+
+        <div class="footer-text">
+            CT-USM &copy; 2026 &mdash; Todos los derechos reservados
+        </div>
+    </div>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        if (params.get('error') === '1') {
+            const div = document.createElement('div');
+            div.className = 'error-message';
+            div.style.display = 'block';
+            div.textContent = 'RUT o contraseña incorrectos. Intente nuevamente.';
+            document.querySelector('form').before(div);
+        }
+    </script>
+</body>
+</html>
